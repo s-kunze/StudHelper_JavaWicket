@@ -7,6 +7,9 @@ public class ServerInfo {
 
 	public ServerInfo() {}
 	
+	private String name;
+	private String version;
+	
 	/**
 	 * @return the name
 	 */
@@ -31,8 +34,5 @@ public class ServerInfo {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-
-	private String name;
-	private String version;
 	
 }
