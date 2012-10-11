@@ -1,4 +1,4 @@
-package de.kunze.studhelper.rest.ressource;
+package de.kunze.studhelper.rest.ressource.core;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

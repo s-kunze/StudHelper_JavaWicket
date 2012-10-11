@@ -1,6 +1,6 @@
-package de.kunze.studhelper.rest.impl;
+package de.kunze.studhelper.rest.impl.core;
 
-import de.kunze.studhelper.rest.ressource.InfoRessource;
+import de.kunze.studhelper.rest.ressource.core.InfoRessource;
 import de.kunze.studhelper.rest.transfer.ServerInfo;
 
 public class InfoImpl implements InfoRessource {

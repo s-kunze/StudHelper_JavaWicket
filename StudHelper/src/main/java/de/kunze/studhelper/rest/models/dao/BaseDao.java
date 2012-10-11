@@ -36,7 +36,7 @@ public class BaseDao<T> implements IBaseDao<T> {
     }
 	
 	@SuppressWarnings("unchecked")
-	public T get(Integer id) {
+	public T get(Long id) {
 		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
 		Session session = sessionFactory.openSession();
 		
@@ -64,16 +64,16 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return result;
 	}
 
-	public Integer save(T t) {
+	public Long save(T t) {
 		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
 		Session session = sessionFactory.openSession();
 		
-		Integer id = null;
+		Long id = null;
 		Transaction ta = null;
 		try {
 			if (t != null) {
 				ta = session.beginTransaction();
-				id = (Integer) session.save(t);
+				id = (Long) session.save(t);
 				ta.commit();
 			} 
 		} catch(HibernateException e) {
@@ -87,7 +87,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 		return id;
 	}
 
-	public void update(T t) {
+	public boolean update(T t) {
 		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
 		Session session = sessionFactory.openSession();
 	
@@ -101,14 +101,20 @@ public class BaseDao<T> implements IBaseDao<T> {
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
 			e.printStackTrace();
+			
+//			session.close();
+//			sessionFactory.close();
+			
+			return false;
 		} finally {
 			session.close();
 			sessionFactory.close();
 		}
 		
+		return true;
 	}
 
-	public void delete(T t) {
+	public boolean delete(T t) {
 		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
 		Session session = sessionFactory.openSession();
 	
@@ -122,10 +128,17 @@ public class BaseDao<T> implements IBaseDao<T> {
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
 			e.printStackTrace();
+			
+			session.close();
+			sessionFactory.close();
+			
+			return false;
 		} finally {
 			session.close();
 			sessionFactory.close();
 		}
+		
+		return true;
 	}
 
 }

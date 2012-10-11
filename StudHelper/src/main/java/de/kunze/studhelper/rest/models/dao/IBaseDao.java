@@ -18,7 +18,7 @@ public interface IBaseDao<T> {
 	 * @param id id of the Object
 	 * @return the Object
 	 */
-	public T get(Integer id);
+	public T get(Long id);
 	
 	/**
 	 * To get all Objects
@@ -31,19 +31,19 @@ public interface IBaseDao<T> {
 	 * @param t the Object to save
 	 * @return the Id in the database
 	 */
-	public Integer save(T t);
+	public Long save(T t);
 	
 	/**
 	 * To update a Object
 	 * @param t the Object to update
 	 * @return the Id in the database
 	 */
-	public void update(T t);
+	public boolean update(T t);
 	
 	/**
 	 * To delete the Object
 	 * @param t the Object to delete
 	 * @return successful?
 	 */
-	public void delete(T t);
+	public boolean delete(T t);
 }

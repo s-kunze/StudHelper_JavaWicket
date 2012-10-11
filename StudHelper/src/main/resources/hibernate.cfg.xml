@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
-"-//Hibernate/Hibernate Configuration DTD//EN"
+ "-//Hibernate/Hibernate Configuration DTD//EN"
 "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
@@ -16,9 +16,13 @@
 
 		<property name="hbm2ddl.auto">update</property>
 
-		<mapping class="de.kunze.studhelper.rest.models.Person" />
-<!-- 		<mapping class="de.kunze.studhelper.rest.models.Formular" /> -->
-<!-- 		<mapping class="de.kunze.studhelper.rest.models.Lecture" /> -->
-		
+		<mapping class="de.kunze.studhelper.rest.models.backend.DegreeCourse" />
+		<mapping class="de.kunze.studhelper.rest.models.backend.Department" />
+		<mapping class="de.kunze.studhelper.rest.models.backend.Lecture" />
+		<mapping class="de.kunze.studhelper.rest.models.backend.LectureUser" />
+		<mapping class="de.kunze.studhelper.rest.models.backend.LectureUserId" />
+		<mapping class="de.kunze.studhelper.rest.models.backend.Modul" />
+		<mapping class="de.kunze.studhelper.rest.models.backend.University" />
+		<mapping class="de.kunze.studhelper.rest.models.user.User" />
 	</session-factory>
 </hibernate-configuration>
