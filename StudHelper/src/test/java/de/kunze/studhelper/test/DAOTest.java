@@ -149,31 +149,6 @@ public class DAOTest {
 	}
 	
 	public static void main(String[] args) {
-//		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
-//		Session session = sessionFactory.openSession();
-//		
-//		session.beginTransaction();
-//		 
-//	    Lecture lecture = new Lecture();
-//	    lecture.setName("Mathe 1");
-//	    lecture.setCreditPoints(3);
-//	 
-//	    User user = new User();
-//	    user.setFirstname("Stefan");
-//	    user.setLastname("Kunze");
-//	    
-//	    session.save(user);
-//	    
-//	    LectureUser lectureUser = new LectureUser();
-//	    lectureUser.setLecture(lecture);
-//	    lectureUser.setUser(user);
-//	    lectureUser.setMark(1.7f);
-//	    
-//	    lecture.getLecturePerson().add(lectureUser);
-//	    
-//	    session.save(lecture);
-//	 
-//	    session.getTransaction().commit();
 	}
 
 }
