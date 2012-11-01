@@ -1,14 +1,15 @@
 package de.kunze.studhelper.view.pages.index;
 
-import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 
-public class Index extends WebPage {
+import de.kunze.studhelper.view.pages.base.BasePage;
+
+public class Index extends BasePage {
 
 	private static final long serialVersionUID = 1L;
 	 
     public Index() {
-        add(new Label("welcome", "Welcome to StudHelper"));
+        add(new Label("welcome", "Das ist die Startseite"));
     }
 	
 }

@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+html {
+	padding: 0px;
+	margin: 0px;
+	
+	color: black;
+	font-family: sans-serif;
+	
+	font-size: 12pt;
+	
+	background: #F5F6CE;
+}
+
+body {
+	width: 80%;
+	border: 1px solid black;
+	
+	margin: 0 auto;
+	
+	margin-top: 10px;
+}
+
+header {
+	width: 100%;
+	
+	padding: 0px;
+	margin: 0px;
+	
+	border-bottom: 1px solid black;
+}
+
+footer {
+	width: 100%;
+	
+	padding: 0px;
+	margin: 0px;
+	
+	border-top: 1px solid black;
+}
