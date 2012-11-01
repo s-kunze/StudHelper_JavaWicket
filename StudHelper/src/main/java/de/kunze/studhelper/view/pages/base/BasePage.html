@@ -11,24 +11,62 @@
 </head>
 <body>
  
- 	<!-- Header Start -->
- 	<header>
- 		<span wicket:id="header"></span>
- 	</header>
- 	<!-- Header End -->
- 
- 	<!-- Main Start -->
- 	<div id="main">
-		<!-- Add the content here -->
-    	<wicket:child/> 
+ 	<!-- Top Row Start -->
+ 	<div id="top">
+ 		<!-- Header Start -->
+	 	<header>
+	 		<h1><span wicket:id="header"></span></h1>
+	 	</header>
+	 	<!-- Header End -->
  	</div>
- 	<!-- Main End -->
+ 	<!-- Top Row End -->
+ 	
+ 	<!-- Middle Row Start -->
+ 	<div id="middle">
+ 		<!-- Menu Start -->
+ 		<aside>
+ 			<table>
+ 				<tr>
+ 					<th>Menü</th>
+ 				</tr>
+ 				<tr>
+ 					<td>
+ 						<a href="#" wicket:id="index">Startseite</a>
+ 					</td>
+ 				</tr>
+ 				<tr>
+ 					<td>
+ 						<a href="#" wicket:id="university">Universtität</a>
+ 					</td>
+ 				</tr>
+ 				<tr>
+ 					<td>
+ 						<a href="#" wicket:id="department">Fakultäten</a>
+ 					</td>	
+ 				</tr>
+ 			</table>
+ 		</aside>
+ 		<!-- Menu End -->
+ 		
+ 		<!-- Main Start -->
+	 	<div id="main">
+			<!-- Add the content here -->
+	    	<wicket:child/> 
+	 	</div>
+	 	<!-- Main End -->
+ 	</div>
+ 	<!-- Middle Row End -->
+ 	
  
- 	<!-- Footer Start -->
- 	<footer>
-		<span wicket:id="footer"></span>
- 	</footer>
- 	<!-- Footer End -->
+ 	<!-- Bottom Row Start -->
+ 	<div id="bottom">
+	 	<!-- Footer Start -->
+	 	<footer>
+			<span wicket:id="footer"></span>
+	 	</footer>
+	 	<!-- Footer End -->
+ 	</div>
+ 	<!-- Bottom Row End -->
 
 </body>
 </html>
