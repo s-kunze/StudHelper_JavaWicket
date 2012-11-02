@@ -93,8 +93,35 @@ aside table td {
 	min-height: 300px;
 	
 	background: #CCCCCC;
+}
+
+#dataviewDiv {
+	width: 100%;
+}
+
+.dataview {
+	width: 80%;
 	
-/* 	display: block; */
+	margin: 10px auto;
+	
+	border-spacing: 3px;
+}
+
+.dataview td {
+	border: 1px solid black;
+	
+	padding: 2px;
+	margin: 2px;
+	
+	background: #F2F5A9;
+}
+
+.dataview th {
+	border: 1px solid black;
+	
+	padding: 2px;
+	
+	background: #F4FA58;
 }
 
 #bottom {

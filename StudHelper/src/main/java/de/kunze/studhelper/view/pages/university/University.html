@@ -6,11 +6,23 @@
 
 	<!-- Content Start -->
     <wicket:extend>
-        <div id="main">
-    		<h3>
-       	 		<span wicket:id="msgUniversity">Das ist die Startseite</span>
-	  		</h3>
-    	</div>
+    
+    	<div id="dataviewDiv">
+	    	<table cellspacing="0" class="dataview">
+	    		<thead>
+	    			<tr>
+	    				<th>Universität</th>
+	    			</tr>
+	    		</thead>
+			    <tbody>
+			       <tr wicket:id="universityTable">
+			         <td><span wicket:id="name">Name Uni</span></td>
+			       </tr>
+			    </tbody>
+			</table>
+		</div>
+
+<!-- 		<div wicket:id="universityNavigator"></div> -->
     </wicket:extend>
     <!-- Content End -->
     

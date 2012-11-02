@@ -1,11 +1,13 @@
 package de.kunze.studhelper.rest.transfer.backend;
 
+import java.io.Serializable;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import de.kunze.studhelper.rest.models.backend.University;
 
 @XmlRootElement
-public class UniversityTransfer {
+public class UniversityTransfer implements Serializable {
 
 	private Long id;
 	private String name;
