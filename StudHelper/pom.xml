@@ -80,6 +80,11 @@
 			<artifactId>hsqldb</artifactId>
 			<version>1.8.0.10</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-extensions</artifactId>
+			<version>1.5.7</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>StudHelper</finalName>

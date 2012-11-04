@@ -7,16 +7,24 @@
 	<!-- Content Start -->
     <wicket:extend>
     
-    	<div id="dataviewDiv">
+    	<a href="#" wicket:id="newUniversity">Neue Universität anlegen!</a>
+    
+    	<div wicket:id="dataviewPanel" id="dataviewDiv">
 	    	<table cellspacing="0" class="dataview">
 	    		<thead>
 	    			<tr>
 	    				<th>Universität</th>
+	    				<th>Optionen</th>
 	    			</tr>
 	    		</thead>
 			    <tbody>
 			       <tr wicket:id="universityTable">
 			         <td><span wicket:id="name">Name Uni</span></td>
+			         <td>
+			         	<a href="#" wicket:id="deleteUniversity">
+			         		<img class="icon" wicket:id="imageDeleteUniversity" />
+			         	</a>
+			         </td>
 			       </tr>
 			    </tbody>
 			</table>

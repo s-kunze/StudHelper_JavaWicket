@@ -21,6 +21,19 @@ body {
 	margin-top: 10px;
 }
 
+img {
+	border: 0px;
+}
+
+.iconTable {
+	border: 0px;
+}
+
+.icon {
+	width: 20px;
+}
+
+
 #top {
 	width: 100%;
 	

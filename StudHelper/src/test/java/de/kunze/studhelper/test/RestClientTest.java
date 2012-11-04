@@ -68,19 +68,19 @@ public class RestClientTest {
 		}
 	}
 	
-//	@Test
-//	public void deleteUniversity() {
-//		List<UniversityTransfer> result = new ArrayList<UniversityTransfer>();
-//		
-//		RestUniversity rest = new RestUniversity();
-//		result = rest.getUniversities();
-//
-//		assertTrue(rest.deleteUniversity(Long.toString(result.get(0).getId())));
-//		assertTrue(rest.deleteUniversity(Long.toString(result.get(1).getId())));
-//		
-//		result = rest.getUniversities();
-//		
-//		assertTrue(result.size() == 0);
-//	}
+	@Test
+	public void deleteUniversity() {
+		List<UniversityTransfer> result = new ArrayList<UniversityTransfer>();
+		
+		RestUniversity rest = new RestUniversity();
+		result = rest.getUniversities();
+
+		assertTrue(rest.deleteUniversity(Long.toString(result.get(0).getId())));
+		assertTrue(rest.deleteUniversity(Long.toString(result.get(1).getId())));
+		
+		result = rest.getUniversities();
+		
+		assertTrue(result.size() == 0);
+	}
 	
 }
