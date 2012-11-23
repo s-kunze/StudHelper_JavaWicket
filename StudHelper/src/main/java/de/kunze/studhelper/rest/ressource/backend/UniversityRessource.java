@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 
 /**
@@ -46,4 +47,25 @@ public interface UniversityRessource {
 	@Path("{university_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response deleteUniversity(@PathParam("university_id") Long id);
+
+	@GET
+	@Path("{university_id}/departments")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public List<DepartmentTransfer> getAllDepartmentsForUniversity(
+			@PathParam("university_id") Long id);
+
+	@GET
+	@Path("{university_id}/department/{department_id}")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public DepartmentTransfer getDepartmentForUniversity(
+			@PathParam("university_id") Long universityId,
+			@PathParam("department_id") Long departmentId);
+
+	@POST
+	@Path("{university_id}/department")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response createDepartmentForUniversity(
+			@PathParam("university_id") Long id, DepartmentTransfer department);
+
 }

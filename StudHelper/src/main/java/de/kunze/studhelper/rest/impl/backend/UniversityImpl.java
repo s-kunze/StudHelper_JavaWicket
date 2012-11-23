@@ -1,19 +1,22 @@
 package de.kunze.studhelper.rest.impl.backend;
 
+import static de.kunze.studhelper.rest.util.Constans.BASE_URL;
+import static de.kunze.studhelper.rest.util.Constans.REST_PART;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import de.kunze.studhelper.rest.models.backend.Department;
 import de.kunze.studhelper.rest.models.backend.University;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.ressource.backend.UniversityRessource;
+import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
-import static de.kunze.studhelper.rest.util.Constans.*;
 
 public class UniversityImpl implements UniversityRessource {
 
@@ -61,7 +64,6 @@ public class UniversityImpl implements UniversityRessource {
 	}
 
 	public Response updateUniversity(UniversityTransfer university) {
-		
 		BaseDao<University> dao = new BaseDao<University>(University.class);
 		if (dao.update(university.transform())) {
 			return Response.status(Status.NO_CONTENT).build();
@@ -83,6 +85,60 @@ public class UniversityImpl implements UniversityRessource {
 		} else {
 			return Response.serverError().build();
 		}
+	}
+
+	public List<DepartmentTransfer> getAllDepartmentsForUniversity(Long id) {
+		List<DepartmentTransfer> result = new ArrayList<DepartmentTransfer>();
+		
+		BaseDao<University> dao = new BaseDao<University>(University.class);
+		University university = dao.get(id);
+
+		if (university != null) {
+			List<Department> departments = university.getDepartments();
+			
+			if(departments != null) {
+				for(Department department : departments) {
+					result.add(department.transform());
+				}
+			}
+		}
+
+		return result;
+	}
+
+	public Response createDepartmentForUniversity(Long id, DepartmentTransfer department) {
+		Department dep = department.transform();
+
+		BaseDao<University> daoUni = new BaseDao<University>(University.class);
+		BaseDao<Department> daoDep = new BaseDao<Department>(Department.class);
+
+		University uni = daoUni.get(id);
+		
+		dep.setUniversity(uni);
+		daoDep.save(dep);
+
+		URI location;
+		try {
+			location = new URI(BASE_URL + REST_PART + "university/" + id + "/department/"
+					+ dep.getId());
+			return Response.created(location).build();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+
+		return Response.serverError().build();
+	}
+
+	public DepartmentTransfer getDepartmentForUniversity(Long universityId,Long departmentId) {
+		BaseDao<Department> dao = new BaseDao<Department>(Department.class);
+		
+		Department department = dao.get(departmentId);
+
+		if (department != null) {
+			return department.transform();
+		}
+		
+		return new DepartmentTransfer();
 	}
 
 }

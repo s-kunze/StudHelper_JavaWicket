@@ -2,6 +2,7 @@ package de.kunze.studhelper.rest.models.backend;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 
 /**
  * 
@@ -29,7 +32,7 @@ public class Department {
 	@Column(name = "DEPARTMENT_NAME")
 	private String name;
 
-	@OneToMany(mappedBy = "department", orphanRemoval = true)
+	@OneToMany(mappedBy = "department")
 	private List<DegreeCourse> degreecourses;
 
 	@ManyToOne
@@ -68,6 +71,14 @@ public class Department {
 
 	public void setUniversity(University university) {
 		this.university = university;
+	}
+
+	public DepartmentTransfer transform() {
+		DepartmentTransfer dt = new DepartmentTransfer();
+		dt.setId(this.id);
+		dt.setName(this.name);
+
+		return dt;
 	}
 
 }

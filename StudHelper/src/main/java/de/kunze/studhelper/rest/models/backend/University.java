@@ -2,8 +2,10 @@ package de.kunze.studhelper.rest.models.backend;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,7 +31,7 @@ public class University {
 	@Column(name = "UNIVERSITY_NAME")
 	private String name;
 	
-	@OneToMany(mappedBy = "university", orphanRemoval = true)
+	@OneToMany(mappedBy = "university", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Department> departments;
 	
 	public University() {
