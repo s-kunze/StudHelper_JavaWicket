@@ -13,59 +13,60 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
-import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 
 /**
  * 
  * @author stefan
  * 
  */
-@Path("/part")
-public interface PartRessource {
+@Path("/modul")
+public interface ModulRessource {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public List<PartTransfer> getAllParts();
+	public List<ModulTransfer> getAllModules();
 
 	@GET
-	@Path("{part_id}")
+	@Path("{modul_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PartTransfer getPart(@PathParam("part_id") Long id);
+	public ModulTransfer getModul(@PathParam("modul_id") Long id);
 
 	@POST
-	@Path("{part_id}")
+	@Path("{modul_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createPart(@PathParam("part_id") Long id, PartTransfer part);
+	public Response createModul(@PathParam("modul_id") Long id,
+			ModulTransfer modul);
 
 	@PUT
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response updatePart(PartTransfer part);
+	public Response updateModul(ModulTransfer modul);
 
 	@DELETE
-	@Path("{part_id}")
+	@Path("{modul_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response deletePart(@PathParam("part_id") Long id);
+	public Response deleteModul(@PathParam("modul_id") Long id);
 
 	@GET
-	@Path("{part_id}/modul")
+	@Path("{modul_id}/lecture")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public List<ModulTransfer> getAllModulesForPart(
-			@PathParam("part_id") Long id);
+	public List<LectureTransfer> getAllLectureForModul(
+			@PathParam("modul_id") Long id);
 
 	@GET
-	@Path("{part_id}/modul/{modul_id}")
+	@Path("{modul_id}/lecture/{lecture_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public ModulTransfer getModulForPart(@PathParam("part_id") Long partId,
-			@PathParam("modul_id") Long modulId);
+	public LectureTransfer getLectureForModul(
+			@PathParam("modul_id") Long modulId,
+			@PathParam("lecture_id") Long lectureId);
 
 	@POST
-	@Path("{part_id}/modul")
+	@Path("{modul_id}/lecture")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createModulForPart(@PathParam("part_id") Long id,
-			ModulTransfer modul);
-
+	public Response createLectureForModul(@PathParam("modul_id") Long id,
+			LectureTransfer lecture);
 }

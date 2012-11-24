@@ -49,7 +49,7 @@ public interface UniversityRessource {
 	public Response deleteUniversity(@PathParam("university_id") Long id);
 
 	@GET
-	@Path("{university_id}/departments")
+	@Path("{university_id}/department")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<DepartmentTransfer> getAllDepartmentsForUniversity(
 			@PathParam("university_id") Long id);

@@ -11,9 +11,11 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import de.kunze.studhelper.rest.models.backend.Modul;
 import de.kunze.studhelper.rest.models.backend.Part;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.ressource.backend.PartRessource;
+import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 
 public class PartImpl implements PartRessource {
@@ -34,7 +36,7 @@ public class PartImpl implements PartRessource {
 
 	public PartTransfer getPart(Long id) {
 		BaseDao<Part> dao = new BaseDao<Part>(Part.class);
-		
+
 		Part result = dao.get(id);
 
 		if (result != null) {
@@ -54,8 +56,7 @@ public class PartImpl implements PartRessource {
 
 		URI location;
 		try {
-			location = new URI(BASE_URL + REST_PART + "part/"
-					+ par.getId());
+			location = new URI(BASE_URL + REST_PART + "part/" + par.getId());
 			dao.close();
 			return Response.created(location).build();
 		} catch (URISyntaxException e) {
@@ -93,6 +94,67 @@ public class PartImpl implements PartRessource {
 			dao.close();
 			return Response.serverError().build();
 		}
+	}
+
+	public List<ModulTransfer> getAllModulesForPart(Long id) {
+		List<ModulTransfer> result = new ArrayList<ModulTransfer>();
+		
+		BaseDao<Part> dao = new BaseDao<Part>(Part.class);
+		Part part = dao.get(id);
+
+		if (part != null) {
+			List<Modul> moduls = part.getModule();
+			
+			if(moduls != null) {
+				for(Modul modul : moduls) {
+					result.add(modul.transform());
+				}
+			}
+		}
+
+		dao.close();
+		return result;
+	}
+
+	public ModulTransfer getModulForPart(Long partId, Long modulId) {
+		BaseDao<Modul> dao = new BaseDao<Modul>(Modul.class);
+		
+		Modul modul = dao.get(modulId);
+
+		if (modul != null) {
+			dao.close();
+			return modul.transform();
+		}
+		
+		dao.close();
+		return new ModulTransfer();	
+	}
+
+	public Response createModulForPart(Long id, ModulTransfer modul) {
+		Modul mod = modul.transform();
+
+		BaseDao<Part> daoPar = new BaseDao<Part>(Part.class);
+		Part part = daoPar.get(id);
+		mod.setPart(part);
+
+		BaseDao<Modul> daoMod = new BaseDao<Modul>(Modul.class);
+		daoMod.save(mod);
+
+		URI location;
+		try {
+			location = new URI(BASE_URL + REST_PART + "part/" + id + "/modul/"
+					+ mod.getId());
+			
+			daoPar.close();
+			daoMod.close();
+			return Response.created(location).build();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+
+		daoPar.close();
+		daoMod.close();
+		return Response.serverError().build();
 	}
 
 }

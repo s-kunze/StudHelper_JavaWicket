@@ -21,7 +21,7 @@ public class HibernateSession {
 		try {
 			AnnotationConfiguration config = new AnnotationConfiguration().configure();
 
-			 new SchemaExport(config).setOutputFile("create.sql").create(true,false);
+			 new SchemaExport(config).setOutputFile("./scripts/create.sql").create(true,false);
 
 			sessionFactory = config.buildSessionFactory();
 		} catch (Exception e) {

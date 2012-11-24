@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
+import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
+
 /**
  * 
  * @author Stefan Kunze
@@ -88,4 +90,13 @@ public class Modul {
 		this.part = part;
 	}
 
+	public ModulTransfer transform() {
+		ModulTransfer modul = new ModulTransfer();
+		modul.setId(this.id);
+		modul.setName(this.name);
+		modul.setCreditPoints(this.creditPoints);
+		
+		return modul;
+	}
+	
 }

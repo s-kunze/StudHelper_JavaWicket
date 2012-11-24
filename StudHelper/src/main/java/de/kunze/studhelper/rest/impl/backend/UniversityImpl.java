@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response.Status;
 import de.kunze.studhelper.rest.models.backend.Department;
 import de.kunze.studhelper.rest.models.backend.University;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
-import de.kunze.studhelper.rest.models.dao.UniversityDao;
 import de.kunze.studhelper.rest.ressource.backend.UniversityRessource;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
@@ -119,31 +118,6 @@ public class UniversityImpl implements UniversityRessource {
 		return result;
 	}
 
-	public Response createDepartmentForUniversity(Long id, DepartmentTransfer department) {
-		Department dep = department.transform();
-
-		UniversityDao daoUni = new UniversityDao();
-
-		University uni = daoUni.get(id);
-		dep.setUniversity(uni);
-		
-		daoUni.saveDepartment(uni, dep);
-
-		URI location;
-		try {
-			location = new URI(BASE_URL + REST_PART + "university/" + id + "/department/"
-					+ dep.getId());
-			
-			daoUni.close();
-			return Response.created(location).build();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-
-		daoUni.close();
-		return Response.serverError().build();
-	}
-
 	public DepartmentTransfer getDepartmentForUniversity(Long universityId,Long departmentId) {
 		BaseDao<Department> dao = new BaseDao<Department>(Department.class);
 		
@@ -155,6 +129,33 @@ public class UniversityImpl implements UniversityRessource {
 		
 		dao.close();
 		return new DepartmentTransfer();
+	}
+	
+	public Response createDepartmentForUniversity(Long id, DepartmentTransfer department) {
+		Department dep = department.transform();
+
+		BaseDao<University> daoUni = new BaseDao<University>(University.class);
+		University university = daoUni.get(id);
+		dep.setUniversity(university);
+
+		BaseDao<Department> daoDep = new BaseDao<Department>(Department.class);
+		daoDep.save(dep);
+		
+		URI location;
+		try {
+			location = new URI(BASE_URL + REST_PART + "university/" + id + "/department/"
+					+ dep.getId());
+			
+			daoUni.close();
+			daoDep.close();
+			return Response.created(location).build();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+
+		daoUni.close();
+		daoDep.close();
+		return Response.serverError().build();
 	}
 
 }

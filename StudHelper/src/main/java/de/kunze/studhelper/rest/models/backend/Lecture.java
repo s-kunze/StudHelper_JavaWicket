@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
+
 /**
  * 
  * @author Stefan Kunze
@@ -79,4 +81,20 @@ public class Lecture implements Serializable {
 		this.lecturePerson = lecturePerson;
 	}
 
+	public List<Modul> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<Modul> modules) {
+		this.modules = modules;
+	}
+	
+	public LectureTransfer transform() {
+		LectureTransfer lecture = new LectureTransfer();
+		lecture.setId(this.id);
+		lecture.setName(this.name);
+		lecture.setCreditPoints(this.creditPoints);
+		
+		return lecture;
+	}
 }

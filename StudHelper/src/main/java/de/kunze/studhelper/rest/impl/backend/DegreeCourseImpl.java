@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response.Status;
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.Part;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
-import de.kunze.studhelper.rest.models.dao.DegreeCourseDao;
 import de.kunze.studhelper.rest.ressource.backend.DegreeCourseRessource;
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
@@ -32,6 +31,7 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 			result.add(degreeCourse.transform());
 		}
 
+		dao.close();
 		return result;
 	}
 
@@ -42,9 +42,11 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 		DegreeCourse result = dao.get(id);
 
 		if (result != null) {
+			dao.close();
 			return result.transform();
 		}
 
+		dao.close();
 		return new DegreeCourseTransfer();
 	}
 
@@ -60,11 +62,13 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 		try {
 			location = new URI(BASE_URL + REST_PART + "degreecourse/"
 					+ deg.getId());
+			dao.close();
 			return Response.created(location).build();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
+		dao.close();
 		return Response.serverError().build();
 	}
 
@@ -72,8 +76,10 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(
 				DegreeCourse.class);
 		if (dao.update(degreecourse.transform())) {
+			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {
+			dao.close();
 			return Response.serverError().build();
 		}
 	}
@@ -84,12 +90,15 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 		DegreeCourse degreeCourse = dao.get(id);
 
 		if (degreeCourse == null) {
+			dao.close();
 			return Response.status(Status.NOT_FOUND).build();
 		}
 
 		if (dao.delete(degreeCourse)) {
+			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {
+			dao.close();
 			return Response.serverError().build();
 		}
 	}
@@ -132,12 +141,12 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 	public Response createPartForDegreeCourse(Long id, PartTransfer part) {
 		Part par = part.transform();
 
-		DegreeCourseDao daoDeg = new DegreeCourseDao();
+		BaseDao<DegreeCourse> daoDeg = new BaseDao<DegreeCourse>(DegreeCourse.class);
+		DegreeCourse degreeCourse = daoDeg.get(id);
+		par.setDegreeCourse(degreeCourse);
 
-		DegreeCourse deg = daoDeg.get(id);
-		par.setDegreeCourse(deg);
-		
-		daoDeg.savePart(deg, par);
+		BaseDao<Part> daoPar = new BaseDao<Part>(Part.class);
+		daoPar.save(par);
 
 		URI location;
 		try {
@@ -145,12 +154,14 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 					+ par.getId());
 			
 			daoDeg.close();
+			daoPar.close();
 			return Response.created(location).build();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
 		daoDeg.close();
+		daoPar.close();
 		return Response.serverError().build();
 	}
 

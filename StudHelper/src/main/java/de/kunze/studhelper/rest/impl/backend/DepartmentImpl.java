@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response.Status;
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.Department;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
-import de.kunze.studhelper.rest.models.dao.DepartmentDao;
 import de.kunze.studhelper.rest.ressource.backend.DepartmentRessource;
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
@@ -137,25 +136,27 @@ public class DepartmentImpl implements DepartmentRessource {
 	public Response createDegreeCourseForDepartment(Long id, DegreeCourseTransfer degreeCourse) {
 		DegreeCourse deg = degreeCourse.transform();
 
-		DepartmentDao daoDep = new DepartmentDao();
+		BaseDao<Department> daoDep = new BaseDao<Department>(Department.class);
+		Department department = daoDep.get(id);
+		deg.setDepartment(department);
 
-		Department dep = daoDep.get(id);
-		deg.setDepartment(dep);
-		
-		daoDep.saveDegreeCourse(dep, deg);
+		BaseDao<DegreeCourse> daoDeg = new BaseDao<DegreeCourse>(DegreeCourse.class);
+		daoDeg.save(deg);
 
 		URI location;
 		try {
 			location = new URI(BASE_URL + REST_PART + "department/" + id + "/degreecourse/"
-					+ dep.getId());
+					+ deg.getId());
 			
 			daoDep.close();
+			daoDeg.close();
 			return Response.created(location).build();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
 		daoDep.close();
+		daoDeg.close();
 		return Response.serverError().build();
 	}
 
