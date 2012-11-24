@@ -110,6 +110,8 @@ public class DAOTest {
 
 			List<University> result = dao.getAll();
 			
+			System.out.println("Result-Size: " + result.size());
+			
 			assertTrue(result.size() == 3);
 			assertTrue(result.get(0).getName().equals(university1.getName()));
 			assertTrue(result.get(1).getName().equals(university2.getName()));

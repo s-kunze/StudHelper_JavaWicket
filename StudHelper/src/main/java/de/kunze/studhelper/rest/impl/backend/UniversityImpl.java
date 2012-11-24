@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response.Status;
 import de.kunze.studhelper.rest.models.backend.Department;
 import de.kunze.studhelper.rest.models.backend.University;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
+import de.kunze.studhelper.rest.models.dao.UniversityDao;
 import de.kunze.studhelper.rest.ressource.backend.UniversityRessource;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
@@ -30,6 +31,7 @@ public class UniversityImpl implements UniversityRessource {
 			result.add(university.transform());
 		}
 
+		dao.close();
 		return result;
 	}
 
@@ -39,9 +41,11 @@ public class UniversityImpl implements UniversityRessource {
 		University result = dao.get(id);
 
 		if (result != null) {
+			dao.close();
 			return result.transform();
 		}
 
+		dao.close();
 		return new UniversityTransfer();
 	}
 
@@ -55,19 +59,23 @@ public class UniversityImpl implements UniversityRessource {
 		try {
 			location = new URI(BASE_URL + REST_PART + "university/"
 					+ uni.getId());
+			dao.close();
 			return Response.created(location).build();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
+		dao.close();
 		return Response.serverError().build();
 	}
 
 	public Response updateUniversity(UniversityTransfer university) {
 		BaseDao<University> dao = new BaseDao<University>(University.class);
 		if (dao.update(university.transform())) {
+			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {
+			dao.close();
 			return Response.serverError().build();
 		}
 	}
@@ -77,12 +85,15 @@ public class UniversityImpl implements UniversityRessource {
 		University university = dao.get(id);
 
 		if (university == null) {
+			dao.close();
 			return Response.status(Status.NOT_FOUND).build();
 		}
 
 		if (dao.delete(university)) {
+			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {
+			dao.close();
 			return Response.serverError().build();
 		}
 	}
@@ -103,29 +114,33 @@ public class UniversityImpl implements UniversityRessource {
 			}
 		}
 
+		dao.close();
+		
 		return result;
 	}
 
 	public Response createDepartmentForUniversity(Long id, DepartmentTransfer department) {
 		Department dep = department.transform();
 
-		BaseDao<University> daoUni = new BaseDao<University>(University.class);
-		BaseDao<Department> daoDep = new BaseDao<Department>(Department.class);
+		UniversityDao daoUni = new UniversityDao();
 
 		University uni = daoUni.get(id);
-		
 		dep.setUniversity(uni);
-		daoDep.save(dep);
+		
+		daoUni.saveDepartment(uni, dep);
 
 		URI location;
 		try {
 			location = new URI(BASE_URL + REST_PART + "university/" + id + "/department/"
 					+ dep.getId());
+			
+			daoUni.close();
 			return Response.created(location).build();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
+		daoUni.close();
 		return Response.serverError().build();
 	}
 
@@ -138,6 +153,7 @@ public class UniversityImpl implements UniversityRessource {
 			return department.transform();
 		}
 		
+		dao.close();
 		return new DepartmentTransfer();
 	}
 

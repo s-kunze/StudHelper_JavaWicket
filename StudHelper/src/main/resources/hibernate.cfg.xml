@@ -23,6 +23,7 @@
 		<mapping class="de.kunze.studhelper.rest.models.backend.LectureUserId" />
 		<mapping class="de.kunze.studhelper.rest.models.backend.Modul" />
 		<mapping class="de.kunze.studhelper.rest.models.backend.University" />
+		<mapping class="de.kunze.studhelper.rest.models.backend.Part" />
 		<mapping class="de.kunze.studhelper.rest.models.user.User" />
 	</session-factory>
 </hibernate-configuration>

@@ -11,9 +11,14 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.Department;
+import de.kunze.studhelper.rest.models.backend.University;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
+import de.kunze.studhelper.rest.models.dao.DepartmentDao;
+import de.kunze.studhelper.rest.models.dao.UniversityDao;
 import de.kunze.studhelper.rest.ressource.backend.DepartmentRessource;
+import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 
 public class DepartmentImpl implements DepartmentRessource {
@@ -28,6 +33,7 @@ public class DepartmentImpl implements DepartmentRessource {
 			result.add(department.transform());
 		}
 
+		dao.close();
 		return result;
 	}
 
@@ -37,9 +43,11 @@ public class DepartmentImpl implements DepartmentRessource {
 		Department result = dao.get(id);
 
 		if (result != null) {
+			dao.close();
 			return result.transform();
 		}
 
+		dao.close();
 		return new DepartmentTransfer();
 	}
 
@@ -54,19 +62,24 @@ public class DepartmentImpl implements DepartmentRessource {
 		try {
 			location = new URI(BASE_URL + REST_PART + "department/"
 					+ dep.getId());
+			
+			dao.close();
 			return Response.created(location).build();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
+		dao.close();
 		return Response.serverError().build();
 	}
 
 	public Response updateDepartment(DepartmentTransfer department) {
 		BaseDao<Department> dao = new BaseDao<Department>(Department.class);
 		if (dao.update(department.transform())) {
+			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {
+			dao.close();
 			return Response.serverError().build();
 		}
 	}
@@ -76,14 +89,76 @@ public class DepartmentImpl implements DepartmentRessource {
 		Department department = dao.get(id);
 
 		if (department == null) {
+			dao.close();
 			return Response.status(Status.NOT_FOUND).build();
 		}
 
 		if (dao.delete(department)) {
+			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {
+			dao.close();
 			return Response.serverError().build();
 		}
+	}
+
+	public List<DegreeCourseTransfer> getAllDegreeCoursesForDepartment(Long id) {
+		List<DegreeCourseTransfer> result = new ArrayList<DegreeCourseTransfer>();
+		
+		BaseDao<Department> dao = new BaseDao<Department>(Department.class);
+		Department department = dao.get(id);
+
+		if (department != null) {
+			List<DegreeCourse> degreeCourses = department.getDegreecourses();
+			
+			if(degreeCourses != null) {
+				for(DegreeCourse degreeCourse : degreeCourses) {
+					result.add(degreeCourse.transform());
+				}
+			}
+		}
+
+		dao.close();
+		return result;
+	}
+
+	public DegreeCourseTransfer getDegreeCourseForDepartment(Long departmentId, Long degreeCourseId) {
+		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(DegreeCourse.class);
+		
+		DegreeCourse degreeCourse = dao.get(degreeCourseId);
+
+		if (degreeCourse != null) {
+			dao.close();
+			return degreeCourse.transform();
+		}
+		
+		dao.close();
+		return new DegreeCourseTransfer();
+	}
+
+	public Response createDegreeCourseForDepartment(Long id, DegreeCourseTransfer degreeCourse) {
+		DegreeCourse deg = degreeCourse.transform();
+
+		DepartmentDao daoDep = new DepartmentDao();
+
+		Department dep = daoDep.get(id);
+		deg.setDepartment(dep);
+		
+		daoDep.saveDegreeCourse(dep, deg);
+
+		URI location;
+		try {
+			location = new URI(BASE_URL + REST_PART + "department/" + id + "/degreecourse/"
+					+ dep.getId());
+			
+			daoDep.close();
+			return Response.created(location).build();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+
+		daoDep.close();
+		return Response.serverError().build();
 	}
 
 }

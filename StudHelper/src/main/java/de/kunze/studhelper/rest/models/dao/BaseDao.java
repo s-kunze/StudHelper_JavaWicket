@@ -24,64 +24,77 @@ public class BaseDao<T> implements IBaseDao<T> {
 
 	private final Class<T> persistentClass;
 	
+	protected SessionFactory sessionFactory;
+	protected Session session;
+	
 	@SuppressWarnings("unchecked")
 	public BaseDao() {
 		this.persistentClass = (Class<T>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+	
+		this.sessionFactory = HibernateSession.getInstance().getSessionFactory();
+		this.session = sessionFactory.openSession();
 	}
 	
 	public BaseDao( final Class<T> persistentClass )
     {
         super();
         this.persistentClass = persistentClass;
+        
+        this.sessionFactory = HibernateSession.getInstance().getSessionFactory();
+		this.session = sessionFactory.openSession();
     }
 	
 	@SuppressWarnings("unchecked")
 	public T get(Long id) {
-		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
-		Session session = sessionFactory.openSession();
 		
-		T result = (T) session.get(persistentClass, id);			
 		
-		session.close();
-		sessionFactory.close();
+		T result = null;
+		Transaction ta = null;
+		try {
+			ta = this.session.beginTransaction();
+			
+			result = (T) this.session.get(persistentClass, id);	
+			
+			ta.commit();
+		} catch(HibernateException e) {
+			if(ta != null) 	ta.rollback();
+			e.printStackTrace();
+		}
 		
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<T> getAll() {
-		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
-		Session session = sessionFactory.openSession();
-		
 		List<T> result = null;
+		Transaction ta = null;
+		try {
+			ta = this.session.beginTransaction();
 		
-		Criteria crit = session.createCriteria(persistentClass);
-        result = crit.list();
-		
-        session.close();
-		sessionFactory.close();
+			Criteria crit = this.session.createCriteria(persistentClass);
+			result = crit.list();
+			
+			ta.commit();
+		} catch(HibernateException e) {
+			if(ta != null) 	ta.rollback();
+			e.printStackTrace();
+		}
         
 		return result;
 	}
 
 	public Long save(T t) {
-		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
-		Session session = sessionFactory.openSession();
-		
 		Long id = null;
 		Transaction ta = null;
 		try {
 			if (t != null) {
-				ta = session.beginTransaction();
-				id = (Long) session.save(t);
+				ta = this.session.beginTransaction();
+				id = (Long) this.session.save(t);
 				ta.commit();
 			} 
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
 			e.printStackTrace();
-		} finally {
-			session.close();
-			sessionFactory.close();
 		}
 		
 		return id;
@@ -102,9 +115,6 @@ public class BaseDao<T> implements IBaseDao<T> {
 			if(ta != null) 	ta.rollback();
 			e.printStackTrace();
 			
-//			session.close();
-//			sessionFactory.close();
-			
 			return false;
 		} finally {
 			session.close();
@@ -115,30 +125,29 @@ public class BaseDao<T> implements IBaseDao<T> {
 	}
 
 	public boolean delete(T t) {
-		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
-		Session session = sessionFactory.openSession();
-	
 		Transaction ta = null;
 		try {
 			if (t != null) {
-				ta = session.beginTransaction();
-				session.delete(t);
+				ta = this.session.beginTransaction();
+				this.session.delete(t);
 				ta.commit();
 			} 
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
 			e.printStackTrace();
-			
-			session.close();
-			sessionFactory.close();
-			
 			return false;
-		} finally {
-			session.close();
-			sessionFactory.close();
 		}
 		
 		return true;
 	}
 
+	public void close() {
+		if(this.session != null) {
+			session.close();
+		}
+		if(this.sessionFactory != null) {
+			sessionFactory.close();
+		}
+	}
+	
 }

@@ -7,10 +7,6 @@
         drop 
         foreign key FK4F782F52BE526691
 
-    alter table LECTURE 
-        drop 
-        foreign key FK2DEF995EB1A5FEF8
-
     alter table LECTURE_USER 
         drop 
         foreign key FKEAB22E0CE88F76AF
@@ -21,7 +17,19 @@
 
     alter table MODUL 
         drop 
-        foreign key FK46204F9107DA7AA
+        foreign key FK46204F958233216
+
+    alter table MODUL_LECTURE 
+        drop 
+        foreign key FK852D3C18F91C1E92
+
+    alter table MODUL_LECTURE 
+        drop 
+        foreign key FK852D3C1891320A72
+
+    alter table PART 
+        drop 
+        foreign key FK255BF3107DA7AA
 
     drop table if exists DEGREECOURSE
 
@@ -32,6 +40,10 @@
     drop table if exists LECTURE_USER
 
     drop table if exists MODUL
+
+    drop table if exists MODUL_LECTURE
+
+    drop table if exists PART
 
     drop table if exists UNIVERSITY
 
@@ -56,7 +68,6 @@
         LECTURE_ID bigint not null auto_increment,
         LECTURE_CREDITPOINTS integer,
         LECTURE_NAME varchar(255),
-        modul_MODUL_ID bigint,
         primary key (LECTURE_ID)
     )
 
@@ -71,8 +82,21 @@
         MODUL_ID bigint not null auto_increment,
         MODUL_CREDITPOINTS integer,
         MODUL_NAME varchar(255),
-        degreeCourse_DEGREECOURSE_ID bigint,
+        part_PART_ID bigint,
         primary key (MODUL_ID)
+    )
+
+    create table MODUL_LECTURE (
+        MODUL_ID bigint not null,
+        LECTURE_ID bigint not null
+    )
+
+    create table PART (
+        PART_ID bigint not null auto_increment,
+        PART_CREDITPOINTS integer,
+        PART_NAME varchar(255),
+        degreeCourse_DEGREECOURSE_ID bigint,
+        primary key (PART_ID)
     )
 
     create table UNIVERSITY (
@@ -103,12 +127,6 @@
         foreign key (university_UNIVERSITY_ID) 
         references UNIVERSITY (UNIVERSITY_ID)
 
-    alter table LECTURE 
-        add index FK2DEF995EB1A5FEF8 (modul_MODUL_ID), 
-        add constraint FK2DEF995EB1A5FEF8 
-        foreign key (modul_MODUL_ID) 
-        references MODUL (MODUL_ID)
-
     alter table LECTURE_USER 
         add index FKEAB22E0CE88F76AF (USER_ID), 
         add constraint FKEAB22E0CE88F76AF 
@@ -122,7 +140,25 @@
         references LECTURE (LECTURE_ID)
 
     alter table MODUL 
-        add index FK46204F9107DA7AA (degreeCourse_DEGREECOURSE_ID), 
-        add constraint FK46204F9107DA7AA 
+        add index FK46204F958233216 (part_PART_ID), 
+        add constraint FK46204F958233216 
+        foreign key (part_PART_ID) 
+        references PART (PART_ID)
+
+    alter table MODUL_LECTURE 
+        add index FK852D3C18F91C1E92 (MODUL_ID), 
+        add constraint FK852D3C18F91C1E92 
+        foreign key (MODUL_ID) 
+        references MODUL (MODUL_ID)
+
+    alter table MODUL_LECTURE 
+        add index FK852D3C1891320A72 (LECTURE_ID), 
+        add constraint FK852D3C1891320A72 
+        foreign key (LECTURE_ID) 
+        references LECTURE (LECTURE_ID)
+
+    alter table PART 
+        add index FK255BF3107DA7AA (degreeCourse_DEGREECOURSE_ID), 
+        add constraint FK255BF3107DA7AA 
         foreign key (degreeCourse_DEGREECOURSE_ID) 
         references DEGREECOURSE (DEGREECOURSE_ID)

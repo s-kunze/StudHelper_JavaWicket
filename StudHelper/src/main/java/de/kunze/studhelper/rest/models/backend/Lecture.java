@@ -2,6 +2,7 @@ package de.kunze.studhelper.rest.models.backend;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,7 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -37,8 +38,8 @@ public class Lecture implements Serializable {
 	@Column(name = "LECTURE_CREDITPOINTS")
 	private Integer creditPoints;
 
-	@ManyToOne
-	private Modul modul;
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "lectures")
+	private List<Modul> modules;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.lecture", cascade = CascadeType.ALL)
 	private Set<LectureUser> lecturePerson = new HashSet<LectureUser>(0);
@@ -68,14 +69,6 @@ public class Lecture implements Serializable {
 
 	public void setCreditPoints(Integer creditPoints) {
 		this.creditPoints = creditPoints;
-	}
-
-	public Modul getModul() {
-		return modul;
-	}
-
-	public void setModul(Modul modul) {
-		this.modul = modul;
 	}
 
 	public Set<LectureUser> getLecturePerson() {

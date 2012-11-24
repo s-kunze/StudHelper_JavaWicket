@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 
 /**
@@ -32,7 +35,7 @@ public class Department {
 	@Column(name = "DEPARTMENT_NAME")
 	private String name;
 
-	@OneToMany(mappedBy = "department")
+	@OneToMany(mappedBy = "department", orphanRemoval=true , cascade = CascadeType.ALL)
 	private List<DegreeCourse> degreecourses;
 
 	@ManyToOne

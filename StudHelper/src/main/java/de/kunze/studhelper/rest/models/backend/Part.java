@@ -9,13 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
-import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 
 /**
  * 
@@ -23,24 +22,29 @@ import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
  * 
  */
 @Entity
-@Table(name = "UNIVERSITY")
-public class University {
+@Table(name = "PART")
+public class Part {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "UNIVERSITY_ID")
+	@Column(name = "PART_ID")
 	private Long id;
 
-	@Column(name = "UNIVERSITY_NAME")
+	@Column(name = "PART_NAME")
 	private String name;
+
+	@Column(name = "PART_CREDITPOINTS")
+	private Integer creditPoints;
+
+	@OneToMany(mappedBy = "part", orphanRemoval = true, cascade = CascadeType.ALL)
+	private List<Modul> module;
 	
-	@OneToMany(mappedBy = "university", orphanRemoval = true, cascade = CascadeType.ALL)
-	@Fetch(FetchMode.SELECT)
-	private List<Department> departments;
-	
-	public University() {
+	@ManyToOne
+	private DegreeCourse degreeCourse;
+
+	public Part() {
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -48,29 +52,37 @@ public class University {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public List<Department> getDepartments() {
-		return departments;
+	public Integer getCreditPoints() {
+		return creditPoints;
 	}
 
-	public void setDepartments(List<Department> departments) {
-		this.departments = departments;
+	public void setCreditPoints(Integer creditPoints) {
+		this.creditPoints = creditPoints;
 	}
-	
-	public UniversityTransfer transform() {
-		UniversityTransfer result = new UniversityTransfer();
-		result.setId(this.id);
-		result.setName(this.name);
-		
-		return result;
+
+	public DegreeCourse getDegreeCourse() {
+		return this.degreeCourse;
+	}
+
+	public void setDegreeCourse(DegreeCourse degreeCourse) {
+		this.degreeCourse = degreeCourse;
+	}
+
+	public List<Modul> getModule() {
+		return module;
+	}
+
+	public void setModule(List<Modul> module) {
+		this.module = module;
 	}
 
 }

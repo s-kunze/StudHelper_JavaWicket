@@ -2,6 +2,7 @@ package de.kunze.studhelper.rest.models.backend;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 
 /**
  * 
@@ -32,8 +38,8 @@ public class DegreeCourse {
 	@Column(name = "DEGREECOURSE_CREDITPOINTS")
 	private Integer creditPoints;
 
-	@OneToMany(mappedBy = "degreeCourse", orphanRemoval = true)
-	private List<Modul> moduls;
+	@OneToMany(mappedBy = "degreeCourse", orphanRemoval = true, cascade = CascadeType.ALL)
+	private List<Part> parts;
 
 	@ManyToOne
 	private Department department;
@@ -65,12 +71,12 @@ public class DegreeCourse {
 		this.creditPoints = creditPoints;
 	}
 
-	public List<Modul> getModuls() {
-		return moduls;
+	public List<Part> getParts() {
+		return parts;
 	}
 
-	public void setModuls(List<Modul> moduls) {
-		this.moduls = moduls;
+	public void setParts(List<Part> parts) {
+		this.parts = parts;
 	}
 
 	public Department getDepartment() {
@@ -79,6 +85,15 @@ public class DegreeCourse {
 
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+	
+	public DegreeCourseTransfer transform() {
+		DegreeCourseTransfer dct = new DegreeCourseTransfer();
+		dct.setId(this.id);
+		dct.setName(this.name);
+		dct.setCreditPoints(this.creditPoints);
+		
+		return dct;
 	}
 
 }

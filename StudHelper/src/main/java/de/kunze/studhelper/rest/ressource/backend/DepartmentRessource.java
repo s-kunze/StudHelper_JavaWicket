@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 
 /**
@@ -48,5 +49,25 @@ public interface DepartmentRessource {
 	@Path("{department_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response deleteDepartment(@PathParam("department_id") Long id);
+	
+	@GET
+	@Path("{department_id}/degreecourse")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public List<DegreeCourseTransfer> getAllDegreeCoursesForDepartment(
+			@PathParam("department_id") Long id);
+
+	@GET
+	@Path("{department_id}/degreecourse/{degreecourse_id}")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public DegreeCourseTransfer getDegreeCourseForDepartment(
+			@PathParam("department_id") Long departmentId,
+			@PathParam("degreecourse_id") Long degreeCourseId);
+
+	@POST
+	@Path("{department_id}/degreecourse")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response createDegreeCourseForDepartment(
+			@PathParam("department_id") Long id, DegreeCourseTransfer degreeCourse);
 
 }
