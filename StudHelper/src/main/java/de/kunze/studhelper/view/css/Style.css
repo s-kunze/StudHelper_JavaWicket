@@ -129,6 +129,10 @@ aside table td {
 	background: #F2F5A9;
 }
 
+.dataview td a {
+	text-decoration: none;
+}
+
 .dataview th {
 	border: 1px solid black;
 	

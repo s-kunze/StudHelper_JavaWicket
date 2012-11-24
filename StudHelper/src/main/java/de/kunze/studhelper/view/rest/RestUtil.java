@@ -19,6 +19,9 @@ public class RestUtil {
 	
     protected Logger logger = LoggerFactory.getLogger(RestUtil.class);
     
+    protected final static String UNIVERSITY = "university";
+	protected final static String DEPARTMENT = "department";
+    
     public RestUtil() {
     	ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);

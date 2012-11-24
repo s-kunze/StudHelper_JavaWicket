@@ -1,18 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-    xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 
 	<!-- Content Start -->
-    <wicket:extend>
-        <div id="main">
-    		<h3>
-       	 		<span wicket:id="msgDepartment">Das ist die Startseite</span>
-	  		</h3>
-    	</div>
-    </wicket:extend>
-    <!-- Content End -->
-    
+	<wicket:extend>
+
+		<form wicket:id="formSelect">
+			<select wicket:id="ddCUniversity">
+			</select>
+		</form>
+
+		<div wicket:id="dataviewPanel" id="dataviewDiv">
+			<table cellspacing="0" class="dataview">
+				<thead>
+					<tr>
+						<th>Fakultät</th>
+						<th>Optionen</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="departmentTable">
+						<td><span wicket:id="name">Name Dep</span></td>
+						<td><a href="#" wicket:id="addDegreeCourse"> <img
+								class="icon" wicket:id="imageAddDegreeCourse" />
+						</a> <a href="#" wicket:id="editDepartment"> <img class="icon"
+								wicket:id="imageEditDepartment" />
+						</a> <a href="#" wicket:id="deleteDepartment"> <img class="icon"
+								wicket:id="imageDeleteDepartment" />
+						</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</wicket:extend>
+
 </body>
 </html>

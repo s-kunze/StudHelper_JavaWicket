@@ -1,37 +1,39 @@
-package de.kunze.studhelper.view.pages.university;
+package de.kunze.studhelper.view.pages.department;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
+import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.view.pages.base.BasePage;
-import de.kunze.studhelper.view.rest.RestUniversity;
+import de.kunze.studhelper.view.pages.university.University;
+import de.kunze.studhelper.view.rest.RestDepartment;
 
-public class CreateUniversity extends BasePage {
+public class CreateDepartment extends BasePage {
 
 	private static final long serialVersionUID = 1L;
 
-	private Form<UniversityTransfer> form;
+	private Form<DepartmentTransfer> form;
 
 	private boolean isNew = true;
 	
+	private String nameUni = null;
 	private String name = null;
 	private Long id = null;
 	
-	public CreateUniversity() {
+	public CreateDepartment() {
 		initComponents();
 	}
 	
-	public CreateUniversity(final PageParameters parameters) {
+	public CreateDepartment(final PageParameters parameters) {
 		
 		String update = parameters.get("update").toString();
-		this.name = parameters.get("name").toString();
+		this.nameUni = parameters.get("nameUni").toString();
 		this.id = new Long(parameters.get("id").toInteger());
 		
 		if("1".equals(update)) {
@@ -43,9 +45,11 @@ public class CreateUniversity extends BasePage {
 
 	private void initComponents() {	
 		
-		this.form = new Form<UniversityTransfer>("createUniversityForm",
-				new CompoundPropertyModel<UniversityTransfer>(
-						new UniversityTransfer()));
+		
+		
+		this.form = new Form<DepartmentTransfer>("createDepartmentForm",
+				new CompoundPropertyModel<DepartmentTransfer>(
+						new DepartmentTransfer()));
 
 		this.form.add(new TextField<String>("name"));
 
@@ -62,33 +66,40 @@ public class CreateUniversity extends BasePage {
 
 		add(feedbackPanel);
 		
-		this.form.add(new AjaxSubmitLink("submitUniversityForm", this.form) {
+		this.form.add(new AjaxSubmitLink("submitDepartmentForm", this.form) {
 			
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 				
-				final UniversityTransfer ut = (UniversityTransfer) form.getModelObject();
+				final DepartmentTransfer dt = (DepartmentTransfer) form.getModelObject();
 
 				/** Jetzt Speichern! */
-				RestUniversity rest = new RestUniversity();
+				RestDepartment rest = new RestDepartment();
 
 				if(isNew) {
-					if (rest.createUniversity(ut)) {
-						/** Zu University wechseln */
-						setResponsePage(University.class);
+					if (rest.createDepartment(id.toString(), dt)) {
+						
+						PageParameters parameters = new PageParameters();
+						parameters.add("uniId", id.toString());
+						
+						setResponsePage(Department.class, parameters);
 					} else {
 						/** Fehler anzeigen */
-						error("Es ist ein Fehler beim Erstellen der Universität aufgetreten!");
+						error("Es ist ein Fehler beim Erstellen der Fakultät aufgetreten!");
 					}
 				} else {
-					if (rest.updateUniversity(ut)) {
+					if (rest.updateDepartment(dt)) {
 						/** Zu University wechseln */
-						setResponsePage(University.class);
+						
+						PageParameters parameters = new PageParameters();
+						parameters.add("uniId", id.toString());
+						
+						setResponsePage(Department.class, parameters);
 					} else {
 						/** Fehler anzeigen */
-						error("Es ist ein Fehler beim Aktualisieren der Universität aufgetreten!");
+						error("Es ist ein Fehler beim Aktualisieren der Fakultät aufgetreten!");
 					}
 				}
 				
@@ -100,6 +111,7 @@ public class CreateUniversity extends BasePage {
 			}
 		});
 
+		add(new Label("msgCreateDepartment","Fakultät für " + this.nameUni + " erstellen"));
 		add(this.form);
 
 	}

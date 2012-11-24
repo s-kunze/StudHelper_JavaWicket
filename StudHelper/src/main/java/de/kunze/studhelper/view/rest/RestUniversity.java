@@ -10,11 +10,10 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.sun.jersey.api.client.ClientResponse;
 
+import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 
 public class RestUniversity extends RestUtil {
-
-	public final static String UNIVERSITY = "university";
 
 	public RestUniversity() {
 		super();
@@ -47,6 +46,21 @@ public class RestUniversity extends RestUtil {
 
 		return new ArrayList<UniversityTransfer>();
 	}
+	
+	public List<DepartmentTransfer> getDepartmentsForUniversity(String id) {
+		try {
+			String json = this.webResource.path(UNIVERSITY).path(id).path(DEPARTMENT)
+					.accept(MediaType.APPLICATION_JSON).get(String.class);
+			return mapper.readValue(json,
+					new TypeReference<List<DepartmentTransfer>>() {
+					});
+		} catch (IOException e) {
+			logger.error("", e);
+		}
+
+		return new ArrayList<DepartmentTransfer>();
+	}
+	
 	
 	public boolean updateUniversity(UniversityTransfer u) {
 		ClientResponse cr = this.webResource.path(UNIVERSITY)
