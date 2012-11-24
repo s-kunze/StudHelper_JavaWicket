@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
+import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 
 /**
  * 
@@ -48,5 +49,25 @@ public interface DegreeCourseRessource {
 	@Path("{degreecourse_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response deleteDegreeCourse(@PathParam("degreecourse_id") Long id);
+	
+	@GET
+	@Path("{degreecourse_id}/part")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public List<PartTransfer> getAllPartsForDegreeCourse(
+			@PathParam("degreecourse_id") Long id);
+
+	@GET
+	@Path("{degreecourse_id}/part/{part_id}")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public PartTransfer getPartForDegreeCourse(
+			@PathParam("degreecourse_id") Long degreeCourseId,
+			@PathParam("part_id") Long partId);
+
+	@POST
+	@Path("{degreecourse_id}/part")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response createPartForDegreeCourse(
+			@PathParam("degreecourse_id") Long id, PartTransfer part);
 	
 }

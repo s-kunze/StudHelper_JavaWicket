@@ -13,10 +13,8 @@ import javax.ws.rs.core.Response.Status;
 
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.Department;
-import de.kunze.studhelper.rest.models.backend.University;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.models.dao.DepartmentDao;
-import de.kunze.studhelper.rest.models.dao.UniversityDao;
 import de.kunze.studhelper.rest.ressource.backend.DepartmentRessource;
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;

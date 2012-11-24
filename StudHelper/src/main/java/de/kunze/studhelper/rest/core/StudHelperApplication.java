@@ -7,6 +7,7 @@ import javax.ws.rs.core.Application;
 
 import de.kunze.studhelper.rest.impl.backend.DegreeCourseImpl;
 import de.kunze.studhelper.rest.impl.backend.DepartmentImpl;
+import de.kunze.studhelper.rest.impl.backend.PartImpl;
 import de.kunze.studhelper.rest.impl.backend.UniversityImpl;
 import de.kunze.studhelper.rest.impl.core.InfoImpl;
 
@@ -19,6 +20,7 @@ public class StudHelperApplication extends Application {
 		s.add(UniversityImpl.class);
 		s.add(DepartmentImpl.class);
 		s.add(DegreeCourseImpl.class);
+		s.add(PartImpl.class);
 
 		return s;
 	}

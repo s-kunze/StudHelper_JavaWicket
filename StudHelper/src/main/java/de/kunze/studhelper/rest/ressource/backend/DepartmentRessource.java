@@ -34,10 +34,10 @@ public interface DepartmentRessource {
 	public DepartmentTransfer getDepartment(@PathParam("department_id") Long id);
 
 	@POST
-	@Path("{university_id}")
+	@Path("{department_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createDepartment(@PathParam("university_id") Long id,
+	public Response createDepartment(@PathParam("department_id") Long id,
 			DepartmentTransfer department);
 
 	@PUT

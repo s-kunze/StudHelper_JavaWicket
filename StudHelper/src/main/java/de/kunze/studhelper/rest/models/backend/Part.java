@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
+
 /**
  * 
  * @author Stefan Kunze
@@ -85,4 +87,13 @@ public class Part {
 		this.module = module;
 	}
 
+	public PartTransfer transform() {
+		PartTransfer part = new PartTransfer();
+		part.setId(this.id);
+		part.setName(this.name);
+		part.setCreditPoints(this.creditPoints);
+		
+		return part;
+	}
+	
 }
