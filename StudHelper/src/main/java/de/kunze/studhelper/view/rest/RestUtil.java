@@ -21,6 +21,7 @@ public class RestUtil {
     
     protected final static String UNIVERSITY = "university";
 	protected final static String DEPARTMENT = "department";
+	protected final static String DEGREECOURSE = "degreecourse";
     
     public RestUtil() {
     	ClientConfig clientConfig = new DefaultClientConfig();

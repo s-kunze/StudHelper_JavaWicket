@@ -51,8 +51,8 @@ public class University extends BasePage {
 					@Override
 					public void onClick() {
 						PageParameters parameters = new PageParameters();
-						parameters.add("nameUni", ut.getName());
-						parameters.add("id", ut.getId());
+						parameters.add("uniName", ut.getName());
+						parameters.add("uniId", ut.getId());
 						setResponsePage(CreateDepartment.class, parameters);
 					}
 					

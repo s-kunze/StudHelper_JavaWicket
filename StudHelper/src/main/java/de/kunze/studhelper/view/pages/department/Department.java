@@ -16,13 +16,14 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 import de.kunze.studhelper.view.pages.base.BasePage;
+import de.kunze.studhelper.view.pages.degreecourse.CreateDegreeCourse;
 import de.kunze.studhelper.view.rest.RestDepartment;
 import de.kunze.studhelper.view.rest.RestUniversity;
 
@@ -38,14 +39,14 @@ public class Department extends BasePage {
 	
 	private DropDownChoice<UniversityTransfer> ddc;
 
-	private String uniId = null;
+	private Long uniId = null;
 
 	public Department() {
 		initComponents();
 	}
 
 	public Department(final PageParameters parameters) {
-		this.uniId = parameters.get("uniId").toString();
+		this.uniId = new Long(parameters.get("uniId").toInteger());
 		initComponents();
 	}
 
@@ -53,10 +54,10 @@ public class Department extends BasePage {
 
 		RestUniversity rest = new RestUniversity();
 
-		if (this.uniId == null || this.uniId.length() == 0) {
+		if (this.uniId == null) {
 			this.list = new ArrayList<DepartmentTransfer>();
 		} else {
-			UniversityTransfer ut = rest.getUniversity(this.uniId);
+			UniversityTransfer ut = rest.getUniversity(this.uniId.toString());
 			this.list = rest.getDepartmentsForUniversity(ut.getId().toString());
 		}
 		final WebMarkupContainer panel = new WebMarkupContainer("dataviewPanel");
@@ -76,11 +77,10 @@ public class Department extends BasePage {
 
 					@Override
 					public void onClick() {
-						// TODO: implement
-						// PageParameters parameters = new PageParameters();
-						// parameters.add("nameUni", ut.getName());
-						// parameters.add("id", ut.getId());
-						// setResponsePage(CreateDepartment.class, parameters);
+						 PageParameters parameters = new PageParameters();
+						 parameters.add("depName", dt.getName());
+						 parameters.add("depId", dt.getId());
+						 setResponsePage(CreateDegreeCourse.class, parameters);
 					}
 
 				}.add(new Image("imageAddDegreeCourse",
@@ -93,12 +93,17 @@ public class Department extends BasePage {
 
 					@Override
 					public void onClick() {
-						// TODO: implement
-						// PageParameters parameters = new PageParameters();
-						// parameters.add("update", "1");
-						// parameters.add("name", ut.getName());
-						// parameters.add("id", ut.getId());
-						// setResponsePage(CreateUniversity.class, parameters);
+						UniversityTransfer ut = ddc.getModel().getObject();
+						 
+						PageParameters parameters = new PageParameters();
+						 
+						parameters.add("update", "1");
+						parameters.add("uniName", ut.getName());
+						parameters.add("uniId", ut.getId());
+						parameters.add("depName", dt.getName());
+						parameters.add("depId", dt.getId());
+						
+						setResponsePage(CreateDepartment.class, parameters);
 					}
 
 				}.add(new Image("imageEditDepartment",
@@ -138,11 +143,21 @@ public class Department extends BasePage {
 
 		add(panel);
 
+		List<UniversityTransfer> universities = rest.getUniversities();
+		
 		this.ddc = new DropDownChoice<UniversityTransfer>(
-				"ddCUniversity", new Model<UniversityTransfer>(
-						university), rest.getUniversities(),
+				"ddCUniversity", new CompoundPropertyModel<UniversityTransfer>(
+						university), universities,
 				new ChoiceRenderer<UniversityTransfer>("name", "id"));
 
+		if (universities != null) {
+			for (UniversityTransfer ut : universities) {
+				if (ut.getId().equals(this.uniId)) {
+					this.ddc.setModelObject(ut);
+				}
+			}
+		}
+		
 		this.ddc.setOutputMarkupId(true);
 
 		this.ddc.add(new AjaxFormComponentUpdatingBehavior("onchange") {

@@ -1,4 +1,4 @@
-package de.kunze.studhelper.view.pages.department;
+package de.kunze.studhelper.view.pages.degreecourse;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
@@ -9,40 +9,43 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
+import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.view.pages.base.BasePage;
-import de.kunze.studhelper.view.pages.university.University;
-import de.kunze.studhelper.view.rest.RestDepartment;
+import de.kunze.studhelper.view.rest.RestDegreeCourse;
 
-public class CreateDepartment extends BasePage {
+public class CreateDegreeCourse extends BasePage {
 
 	private static final long serialVersionUID = 1L;
 
-	private Form<DepartmentTransfer> form;
+	private Form<DegreeCourseTransfer> form;
 
 	private boolean isNew = true;
-
-	private String uniName = null;
-	private Long uniId = null;
 
 	private String depName = null;
 	private Long depId = null;
 
-	public CreateDepartment() {
+	private String degName = null;
+	private Integer degCp = null;
+	private Long degId = null;
+
+	public CreateDegreeCourse() {
 		initComponents();
 	}
 
-	public CreateDepartment(final PageParameters parameters) {
+	public CreateDegreeCourse(final PageParameters parameters) {
 
 		try {
 
 			String update = parameters.get("update").toString();
-			this.uniName = parameters.get("uniName").toString();
-			this.uniId = new Long(parameters.get("uniId").toInteger());
-
 			this.depName = parameters.get("depName").toString();
 			this.depId = new Long(parameters.get("depId").toInteger());
 
+			this.degName = parameters.get("degName").toString();
+			this.degCp = parameters.get("degCp").toInteger();
+			this.degId = new Long(parameters.get("degId").toInteger());
+
+			
+			
 			if ("1".equals(update)) {
 				this.isNew = false;
 			}
@@ -56,18 +59,23 @@ public class CreateDepartment extends BasePage {
 
 	private void initComponents() {
 
-		this.form = new Form<DepartmentTransfer>("createDepartmentForm",
-				new CompoundPropertyModel<DepartmentTransfer>(
-						new DepartmentTransfer()));
+		this.form = new Form<DegreeCourseTransfer>("createDegreeCourseForm",
+				new CompoundPropertyModel<DegreeCourseTransfer>(
+						new DegreeCourseTransfer()));
 
 		this.form.add(new TextField<String>("name"));
+		this.form.add(new TextField<Integer>("creditPoints"));
 
-		if (this.depName != null) {
-			this.form.getModel().getObject().setName(this.depName);
+		if (this.degName != null) {
+			this.form.getModel().getObject().setName(this.degName);
 		}
 
-		if (this.depId != null) {
-			this.form.getModel().getObject().setId(this.depId);
+		if(this.degCp != null) {
+			this.form.getModel().getObject().setCreditPoints(this.degCp);
+		}
+		
+		if (this.degId != null) {
+			this.form.getModel().getObject().setId(this.degId);
 		}
 
 		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
@@ -75,41 +83,40 @@ public class CreateDepartment extends BasePage {
 
 		add(feedbackPanel);
 
-		this.form.add(new AjaxSubmitLink("submitDepartmentForm", this.form) {
+		this.form.add(new AjaxSubmitLink("submitDegreeCourseForm", this.form) {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 
-				final DepartmentTransfer dt = (DepartmentTransfer) form
-						.getModelObject();
+				final DegreeCourseTransfer dt = (DegreeCourseTransfer) form.getModelObject();
 
 				/** Jetzt Speichern! */
-				RestDepartment rest = new RestDepartment();
+				RestDegreeCourse rest = new RestDegreeCourse();
 
 				if (isNew) {
-					if (rest.createDepartment(uniId.toString(), dt)) {
+					if (rest.createDegreeCourse(depId.toString(), dt)) {
 
 						PageParameters parameters = new PageParameters();
-						parameters.add("uniId", uniId.toString());
+						parameters.add("depId", depId.toString());
 
-						setResponsePage(Department.class, parameters);
+						setResponsePage(DegreeCourse.class, parameters);
 					} else {
 						/** Fehler anzeigen */
-						error("Es ist ein Fehler beim Erstellen der Fakultät aufgetreten!");
+						error("Es ist ein Fehler beim Erstellen des Studiengangs aufgetreten!");
 					}
 				} else {
-					if (rest.updateDepartment(dt)) {
+					if (rest.updateDegreeCourse(dt)) {
 						/** Zu University wechseln */
 
 						PageParameters parameters = new PageParameters();
-						parameters.add("uniId", uniId.toString());
+						parameters.add("depId", depId.toString());
 
-						setResponsePage(Department.class, parameters);
+						setResponsePage(DegreeCourse.class, parameters);
 					} else {
 						/** Fehler anzeigen */
-						error("Es ist ein Fehler beim Aktualisieren der Fakultät aufgetreten!");
+						error("Es ist ein Fehler beim Aktualisieren des Studiengangs aufgetreten!");
 					}
 				}
 
@@ -121,7 +128,7 @@ public class CreateDepartment extends BasePage {
 			}
 		});
 
-		add(new Label("msgCreateDepartment", "Fakultät für " + this.uniName
+		add(new Label("msgCreateDegreeCourse", "Studiengang für " + this.depName
 				+ " erstellen"));
 		add(this.form);
 

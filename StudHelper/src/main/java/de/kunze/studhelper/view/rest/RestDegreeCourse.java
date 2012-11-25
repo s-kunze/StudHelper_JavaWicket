@@ -11,45 +11,30 @@ import org.codehaus.jackson.type.TypeReference;
 import com.sun.jersey.api.client.ClientResponse;
 
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
-import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 
-public class RestDepartment extends RestUtil {
+public class RestDegreeCourse extends RestUtil {
 
-	public RestDepartment() {
+	public RestDegreeCourse() {
 		super();
 	}
 
-	public boolean createDepartment(String id, DepartmentTransfer d) {	
-		ClientResponse cr = this.webResource.path(UNIVERSITY).path(id).path(DEPARTMENT)
+	public boolean createDegreeCourse(String id, DegreeCourseTransfer d) {	
+		ClientResponse cr = this.webResource.path(DEPARTMENT).path(id).path(DEGREECOURSE)
 				.type(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}
 
-	public DepartmentTransfer getDepartment(String id) {
-		return this.webResource.path(DEPARTMENT).path(id)
+	public DegreeCourseTransfer getDegreeCourse(String id) {
+		return this.webResource.path(DEGREECOURSE).path(id)
 				.accept(MediaType.APPLICATION_JSON)
-				.get(DepartmentTransfer.class);
+				.get(DegreeCourseTransfer.class);
 	}
 
-	public List<DepartmentTransfer> getDepartments() {
+	public List<DegreeCourseTransfer> getDegreeCourses() {
 		try {
-			String json = this.webResource.path(DEPARTMENT)
-					.accept(MediaType.APPLICATION_JSON).get(String.class);
-			return mapper.readValue(json,
-					new TypeReference<List<DepartmentTransfer>>() {
-					});
-		} catch (IOException e) {
-			logger.error("", e);
-		}
-
-		return new ArrayList<DepartmentTransfer>();
-	}
-	
-	public List<DegreeCourseTransfer> getDegreeCourseForDepartment(String id) {
-		try {
-			String json = this.webResource.path(DEPARTMENT).path(id).path(DEGREECOURSE)
+			String json = this.webResource.path(DEGREECOURSE)
 					.accept(MediaType.APPLICATION_JSON).get(String.class);
 			return mapper.readValue(json,
 					new TypeReference<List<DegreeCourseTransfer>>() {
@@ -61,16 +46,30 @@ public class RestDepartment extends RestUtil {
 		return new ArrayList<DegreeCourseTransfer>();
 	}
 	
-	public boolean updateDepartment(DepartmentTransfer d) {
-		ClientResponse cr = this.webResource.path(DEPARTMENT)
+//	public List<DegreeCourseTransfer> getDegreeCourseForDepartment(String id) {
+//		try {
+//			String json = this.webResource.path(DEPARTMENT).path(id).path(DEGREECOURSE)
+//					.accept(MediaType.APPLICATION_JSON).get(String.class);
+//			return mapper.readValue(json,
+//					new TypeReference<List<DegreeCourseTransfer>>() {
+//					});
+//		} catch (IOException e) {
+//			logger.error("", e);
+//		}
+//
+//		return new ArrayList<DegreeCourseTransfer>();
+//	}
+	
+	public boolean updateDegreeCourse(DegreeCourseTransfer d) {
+		ClientResponse cr = this.webResource.path(DEGREECOURSE)
 				.type(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}
 	
-	public boolean deleteDepartment(String id) {
-    	ClientResponse cr = webResource.path(DEPARTMENT)
+	public boolean deleteDegreeCourse(String id) {
+    	ClientResponse cr = webResource.path(DEGREECOURSE)
                 .path(id)
                 .type(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
