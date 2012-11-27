@@ -11,6 +11,7 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.Lecture;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.ressource.backend.LectureRessource;
@@ -67,7 +68,11 @@ public class LectureImpl implements LectureRessource {
 
 	public Response updateLecture(LectureTransfer lecture) {
 		BaseDao<Lecture> dao = new BaseDao<Lecture>(Lecture.class);
-		if (dao.update(lecture.transform())) {
+		
+		Lecture lec = lecture.transform();
+		lec.setModules(dao.get(lec.getId()).getModules());
+		
+		if (dao.update(lec)) {
 			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {

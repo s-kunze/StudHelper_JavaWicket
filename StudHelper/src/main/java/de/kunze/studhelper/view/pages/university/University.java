@@ -10,7 +10,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
@@ -58,28 +57,7 @@ public class University extends BasePage {
 			public void populateItem(final Item<UniversityTransfer> item) {
 				final UniversityTransfer ut = (UniversityTransfer) item.getModelObject();
 				item.add(new Label("name", ut.getName()));
-
-				item.add(new AjaxLink<Void>("addDepartment") {
-
-					private static final long serialVersionUID = 2897632616206239753L;
-
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						// getModal().setContent(new
-						// CreateDepartment(getModal().getContentId(), ut));
-						//
-						// getModal().setTitle("Universität anlegen");
-						// getModal().setInitialHeight(150);
-						// getModal().setInitialWidth(400);
-						// getModal().show(target);
-						// PageParameters parameters = new PageParameters();
-						// parameters.add("uniName", ut.getName());
-						// parameters.add("uniId", ut.getId());
-						// setResponsePage(CreateDepartment.class, parameters);
-					}
-
-				}.add(new Image("imageAddDepartment", new SharedResourceReference(BasePage.class, "../../gfx/add.png"))));
-
+				
 				item.add(new AjaxLink<Void>("editUniversity") {
 
 					private static final long serialVersionUID = 1L;

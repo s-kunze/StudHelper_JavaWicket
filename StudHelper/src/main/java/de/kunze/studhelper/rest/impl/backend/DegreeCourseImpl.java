@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
+import de.kunze.studhelper.rest.models.backend.Department;
 import de.kunze.studhelper.rest.models.backend.Part;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.ressource.backend.DegreeCourseRessource;
@@ -23,8 +24,7 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 	public List<DegreeCourseTransfer> getAllDegreeCourse() {
 		List<DegreeCourseTransfer> result = new ArrayList<DegreeCourseTransfer>();
 
-		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(
-				DegreeCourse.class);
+		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(DegreeCourse.class);
 		List<DegreeCourse> degreeCourses = dao.getAll();
 
 		for (DegreeCourse degreeCourse : degreeCourses) {
@@ -36,8 +36,7 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 	}
 
 	public DegreeCourseTransfer getDegreeCourse(Long id) {
-		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(
-				DegreeCourse.class);
+		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(DegreeCourse.class);
 
 		DegreeCourse result = dao.get(id);
 
@@ -50,18 +49,15 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 		return new DegreeCourseTransfer();
 	}
 
-	public Response createDegreeCourse(Long id,
-			DegreeCourseTransfer degreecourse) {
+	public Response createDegreeCourse(Long id, DegreeCourseTransfer degreecourse) {
 		DegreeCourse deg = degreecourse.transform();
 
-		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(
-				DegreeCourse.class);
+		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(DegreeCourse.class);
 		dao.save(deg);
 
 		URI location;
 		try {
-			location = new URI(BASE_URL + REST_PART + "degreecourse/"
-					+ deg.getId());
+			location = new URI(BASE_URL + REST_PART + "degreecourse/" + deg.getId());
 			dao.close();
 			return Response.created(location).build();
 		} catch (URISyntaxException e) {
@@ -73,9 +69,12 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 	}
 
 	public Response updateDegreeCourse(DegreeCourseTransfer degreecourse) {
-		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(
-				DegreeCourse.class);
-		if (dao.update(degreecourse.transform())) {
+		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(DegreeCourse.class);
+
+		DegreeCourse deg = degreecourse.transform();
+		deg.setDepartment(dao.get(deg.getId()).getDepartment());
+
+		if (dao.update(deg)) {
 			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {
@@ -85,8 +84,7 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 	}
 
 	public Response deleteDegreeCourse(Long id) {
-		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(
-				DegreeCourse.class);
+		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(DegreeCourse.class);
 		DegreeCourse degreeCourse = dao.get(id);
 
 		if (degreeCourse == null) {
@@ -105,15 +103,15 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 
 	public List<PartTransfer> getAllPartsForDegreeCourse(Long id) {
 		List<PartTransfer> result = new ArrayList<PartTransfer>();
-		
+
 		BaseDao<DegreeCourse> dao = new BaseDao<DegreeCourse>(DegreeCourse.class);
 		DegreeCourse degreeCourse = dao.get(id);
 
 		if (degreeCourse != null) {
 			List<Part> parts = degreeCourse.getParts();
-			
-			if(parts != null) {
-				for(Part part : parts) {
+
+			if (parts != null) {
+				for (Part part : parts) {
 					result.add(part.transform());
 				}
 			}
@@ -123,17 +121,16 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 		return result;
 	}
 
-	public PartTransfer getPartForDegreeCourse(Long degreeCourseId,
-			Long partId) {
+	public PartTransfer getPartForDegreeCourse(Long degreeCourseId, Long partId) {
 		BaseDao<Part> dao = new BaseDao<Part>(Part.class);
-		
+
 		Part part = dao.get(partId);
 
 		if (part != null) {
 			dao.close();
 			return part.transform();
 		}
-		
+
 		dao.close();
 		return new PartTransfer();
 	}
@@ -150,9 +147,8 @@ public class DegreeCourseImpl implements DegreeCourseRessource {
 
 		URI location;
 		try {
-			location = new URI(BASE_URL + REST_PART + "degreecourse/" + id + "/part/"
-					+ par.getId());
-			
+			location = new URI(BASE_URL + REST_PART + "degreecourse/" + id + "/part/" + par.getId());
+
 			daoDeg.close();
 			daoPar.close();
 			return Response.created(location).build();

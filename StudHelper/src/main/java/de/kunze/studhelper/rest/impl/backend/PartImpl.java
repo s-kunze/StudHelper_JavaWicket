@@ -69,6 +69,10 @@ public class PartImpl implements PartRessource {
 
 	public Response updatePart(PartTransfer part) {
 		BaseDao<Part> dao = new BaseDao<Part>(Part.class);
+		
+		Part par = part.transform();
+		par.setDegreeCourse(dao.get(par.getId()).getDegreeCourse());
+		
 		if (dao.update(part.transform())) {
 			dao.close();
 			return Response.status(Status.NO_CONTENT).build();

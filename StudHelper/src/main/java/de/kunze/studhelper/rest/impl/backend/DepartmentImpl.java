@@ -72,7 +72,11 @@ public class DepartmentImpl implements DepartmentRessource {
 
 	public Response updateDepartment(DepartmentTransfer department) {
 		BaseDao<Department> dao = new BaseDao<Department>(Department.class);
-		if (dao.update(department.transform())) {
+		
+		Department dep = department.transform();
+		dep.setUniversity(dao.get(dep.getId()).getUniversity());
+		
+		if (dao.update(dep)) {
 			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {

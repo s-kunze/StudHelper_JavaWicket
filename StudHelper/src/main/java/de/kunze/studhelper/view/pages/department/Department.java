@@ -6,24 +6,25 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 import de.kunze.studhelper.view.pages.base.BasePage;
-import de.kunze.studhelper.view.pages.degreecourse.CreateDegreeCourse;
 import de.kunze.studhelper.view.rest.RestDepartment;
 import de.kunze.studhelper.view.rest.RestUniversity;
 
@@ -35,104 +36,110 @@ public class Department extends BasePage {
 
 	private List<DepartmentTransfer> list = null;
 
-	private UniversityTransfer university;
-	
+	private UniversityTransfer ut = null;
+
 	private DropDownChoice<UniversityTransfer> ddc;
 
-	private Long uniId = null;
+	private RestUniversity restUni = null;
+	private RestDepartment restDep = null;
+
+	private WebMarkupContainer panel = null;
 
 	public Department() {
+		this.restUni = new RestUniversity();
+		this.restDep = new RestDepartment();
+
 		initComponents();
 	}
 
-	public Department(final PageParameters parameters) {
-		this.uniId = new Long(parameters.get("uniId").toInteger());
+	public Department(UniversityTransfer ut) {
+		this.ut = ut;
+
+		this.restUni = new RestUniversity();
+		this.restDep = new RestDepartment();
+
 		initComponents();
+	}
+
+	protected void refreshDepartment() {
+		list.clear();
+		list.addAll(restUni.getDepartmentsForUniversity(ut.getId().toString()));
+	}
+
+	protected void refreshDepartment(UniversityTransfer university) {
+		list.clear();
+		list.addAll(restUni.getDepartmentsForUniversity(university.getId().toString()));
 	}
 
 	private void initComponents() {
 
-		RestUniversity rest = new RestUniversity();
-
-		if (this.uniId == null) {
+		if (this.ut == null) {
 			this.list = new ArrayList<DepartmentTransfer>();
 		} else {
-			UniversityTransfer ut = rest.getUniversity(this.uniId.toString());
-			this.list = rest.getDepartmentsForUniversity(ut.getId().toString());
+			UniversityTransfer ut = restUni.getUniversity(this.ut.getId().toString());
+			this.list = restUni.getDepartmentsForUniversity(ut.getId().toString());
 		}
-		final WebMarkupContainer panel = new WebMarkupContainer("dataviewPanel");
 
-		this.dataView = new DataView<DepartmentTransfer>("departmentTable",
-				new ListDataProvider<DepartmentTransfer>(list)) {
+		panel = new WebMarkupContainer("dataviewPanel");
+
+		this.dataView = new DataView<DepartmentTransfer>("departmentTable", new ListDataProvider<DepartmentTransfer>(list)) {
 			private static final long serialVersionUID = 1L;
 
 			public void populateItem(final Item<DepartmentTransfer> item) {
-				final DepartmentTransfer dt = (DepartmentTransfer) item
-						.getModelObject();
+				final DepartmentTransfer dt = (DepartmentTransfer) item.getModelObject();
 				item.add(new Label("name", dt.getName()));
 
-				item.add(new Link<Void>("addDegreeCourse") {
-
-					private static final long serialVersionUID = 2897632616206239753L;
-
-					@Override
-					public void onClick() {
-						 PageParameters parameters = new PageParameters();
-						 parameters.add("depName", dt.getName());
-						 parameters.add("depId", dt.getId());
-						 setResponsePage(CreateDegreeCourse.class, parameters);
-					}
-
-				}.add(new Image("imageAddDegreeCourse",
-						new SharedResourceReference(BasePage.class,
-								"../../gfx/add.png"))));
-
-				item.add(new Link<Void>("editDepartment") {
+				item.add(new AjaxLink<Void>("editDepartment") {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public void onClick() {
-						UniversityTransfer ut = ddc.getModel().getObject();
-						 
-						PageParameters parameters = new PageParameters();
-						 
-						parameters.add("update", "1");
-						parameters.add("uniName", ut.getName());
-						parameters.add("uniId", ut.getId());
-						parameters.add("depName", dt.getName());
-						parameters.add("depId", dt.getId());
-						
-						setResponsePage(CreateDepartment.class, parameters);
+					public void onClick(AjaxRequestTarget target) {
+						getModal().setContent(new CreateDepartment(getModal().getContentId(), ddc.getModelObject(), dt));
+						getModal().setTitle("Fakultät anlegen");
+						getModal().setInitialHeight(150);
+						getModal().setInitialWidth(400);
+						getModal().show(target);
 					}
 
-				}.add(new Image("imageEditDepartment",
-						new SharedResourceReference(BasePage.class,
-								"../../gfx/edit.png"))));
+				}.add(new Image("imageEditDepartment", new SharedResourceReference(BasePage.class, "../../gfx/edit.png"))));
+				
 				item.add(new AjaxLink<Void>("deleteDepartment") {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						/** Löschen */
-						RestDepartment restDepartment = new RestDepartment();
-						restDepartment.deleteDepartment(Long.toString(dt
-								.getId()));
+						getModal().setContent(new ConfirmPanel(getModal().getContentId()) {
 
-						RestUniversity restUniversity = new RestUniversity();
+							private static final long serialVersionUID = 1L;
 
-						list.clear();
-						list.addAll(restUniversity
-								.getDepartmentsForUniversity(ddc.getModel().getObject().getId().toString()));
+							@Override
+							protected void setOkButton() {
+								add(new AjaxLink<Void>("yes") {
 
-						/** reload table */
-						target.add(panel);
+									private static final long serialVersionUID = 1L;
+
+									@Override
+									public void onClick(AjaxRequestTarget target) {
+										restDep.deleteDepartment(Long.toString(dt.getId()));
+										refreshDepartment(ddc.getModelObject());
+
+										target.add(panel);
+										modal.close(target);
+									}
+
+								});
+							}
+
+						});
+						getModal().setTitle("Universität löschen");
+						getModal().setInitialHeight(150);
+						getModal().setInitialWidth(400);
+						getModal().show(target);
 					}
 
-				}.add(new Image("imageDeleteDepartment",
-						new SharedResourceReference(BasePage.class,
-								"../../gfx/delete.png"))));
+				}.add(new Image("imageDeleteDepartment", new SharedResourceReference(BasePage.class, "../../gfx/delete.png"))));
 			}
 		};
 
@@ -143,21 +150,28 @@ public class Department extends BasePage {
 
 		add(panel);
 
-		List<UniversityTransfer> universities = rest.getUniversities();
-		
-		this.ddc = new DropDownChoice<UniversityTransfer>(
-				"ddCUniversity", new CompoundPropertyModel<UniversityTransfer>(
-						university), universities,
+		add(new AjaxLink<Void>("newDepartment") {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				getModal().setContent(new CreateDepartment(getModal().getContentId(), ddc.getModelObject()));
+				getModal().setTitle("Fakultät anlegen");
+				getModal().setInitialHeight(150);
+				getModal().setInitialWidth(400);
+				getModal().show(target);
+			}
+
+		});
+
+		List<UniversityTransfer> universities = restUni.getUniversities();
+
+		this.ddc = new DropDownChoice<UniversityTransfer>("ddCUniversity", new CompoundPropertyModel<UniversityTransfer>(ut), universities,
 				new ChoiceRenderer<UniversityTransfer>("name", "id"));
 
-		if (universities != null) {
-			for (UniversityTransfer ut : universities) {
-				if (ut.getId().equals(this.uniId)) {
-					this.ddc.setModelObject(ut);
-				}
-			}
-		}
-		
+		this.ddc.setModelObject(ut);
+
 		this.ddc.setOutputMarkupId(true);
 
 		this.ddc.add(new AjaxFormComponentUpdatingBehavior("onchange") {
@@ -166,16 +180,12 @@ public class Department extends BasePage {
 
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
-				RestUniversity restUniversity = new RestUniversity();
 
-				university = ddc.getModel().getObject();
-				
-				if (university != null) {
+				final UniversityTransfer newUt = ddc.getModel().getObject();
+
+				if (newUt != null) {
 					list.clear();
-
-					list.addAll(restUniversity
-							.getDepartmentsForUniversity(university.getId()
-									.toString()));
+					list.addAll(restUni.getDepartmentsForUniversity(newUt.getId().toString()));
 				}
 
 				target.add(panel);
@@ -183,16 +193,101 @@ public class Department extends BasePage {
 		});
 
 		Form<Void> form = new Form<Void>("formSelect");
-	
+
 		form.add(ddc);
 		add(form);
 	}
 
-	public UniversityTransfer getUniversity() {
-		return university;
+	public UniversityTransfer getUt() {
+		return ut;
 	}
 
-	public void setUniversity(UniversityTransfer university) {
-		this.university = university;
+	public void setUt(UniversityTransfer university) {
+		this.ut = university;
+	}
+
+	private class CreateDepartment extends Panel {
+
+		private static final long serialVersionUID = 1L;
+
+		private Form<DepartmentTransfer> form;
+
+		private UniversityTransfer ut = null;
+
+		private DepartmentTransfer dt = null;
+
+		public CreateDepartment(String id, UniversityTransfer ut) {
+			super(id);
+			this.ut = ut;
+
+			initComponents();
+		}
+
+		public CreateDepartment(String id, UniversityTransfer ut, DepartmentTransfer dt) {
+			super(id);
+			this.ut = ut;
+			this.dt = dt;
+
+			initComponents();
+		}
+
+		private void initComponents() {
+			this.form = new Form<DepartmentTransfer>("createDepartmentForm", new CompoundPropertyModel<DepartmentTransfer>(new DepartmentTransfer()));
+
+			this.form.add(new TextField<String>("name"));
+
+			if (this.dt != null) {
+				this.form.setModelObject(this.dt);
+			}
+
+			final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+			feedbackPanel.setOutputMarkupId(true);
+
+			add(feedbackPanel);
+
+			this.form.add(new AjaxSubmitLink("submitDepartmentForm", this.form) {
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+
+					final DepartmentTransfer newDepartment = (DepartmentTransfer) form.getModelObject();
+
+					if (dt == null) {
+						if (restDep.createDepartment(ut.getId().toString(), newDepartment)) {
+
+							refreshDepartment(ut);
+							target.add(panel);
+
+							modal.close(target);
+						} else {
+							/** Fehler anzeigen */
+							error("Es ist ein Fehler beim Erstellen der Fakultät aufgetreten!");
+						}
+					} else {
+						if (restDep.updateDepartment(newDepartment)) {
+							refreshDepartment(ut);
+							target.add(panel);
+
+							modal.close(target);
+						} else {
+							/** Fehler anzeigen */
+							error("Es ist ein Fehler beim Aktualisieren der Fakultät aufgetreten!");
+						}
+					}
+
+				}
+
+				@Override
+				protected void onError(AjaxRequestTarget target, Form<?> form) {
+					target.add(feedbackPanel);
+				}
+			});
+
+			add(new Label("msgCreateDepartment", "Fakultät für " + ut.getName() + " erstellen"));
+			add(this.form);
+		}
+
 	}
 }

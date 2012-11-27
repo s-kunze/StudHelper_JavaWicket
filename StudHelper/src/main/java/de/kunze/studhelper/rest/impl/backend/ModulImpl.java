@@ -70,7 +70,11 @@ public class ModulImpl implements ModulRessource {
 
 	public Response updateModul(ModulTransfer modul) {
 		BaseDao<Modul> dao = new BaseDao<Modul>(Modul.class);
-		if (dao.update(modul.transform())) {
+		
+		Modul mod = modul.transform();
+		mod.setPart(dao.get(mod.getId()).getPart());
+		
+		if (dao.update(mod)) {
 			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {

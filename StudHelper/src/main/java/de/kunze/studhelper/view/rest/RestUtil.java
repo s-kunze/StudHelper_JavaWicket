@@ -13,6 +13,7 @@ import com.sun.jersey.api.json.JSONConfiguration;
 //import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 
 public class RestUtil {
+	
 	protected Client client;
     protected ObjectMapper mapper = new ObjectMapper();
     protected WebResource webResource;
