@@ -25,6 +25,8 @@ import org.apache.wicket.request.resource.SharedResourceReference;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 import de.kunze.studhelper.view.pages.base.BasePage;
+import de.kunze.studhelper.view.pages.degreecourse.CreateDegreeCourse;
+import de.kunze.studhelper.view.pages.university.University;
 import de.kunze.studhelper.view.rest.RestDepartment;
 import de.kunze.studhelper.view.rest.RestUniversity;
 
@@ -66,10 +68,6 @@ public class Department extends BasePage {
 		list.addAll(restUni.getDepartmentsForUniversity(ut.getId().toString()));
 	}
 
-//	protected void refreshDepartment(UniversityTransfer university) {
-//		list.clear();
-//		list.addAll(restUni.getDepartmentsForUniversity(university.getId().toString()));
-//	}
 
 	private void initComponents() {
 
@@ -89,6 +87,22 @@ public class Department extends BasePage {
 				final DepartmentTransfer dt = (DepartmentTransfer) item.getModelObject();
 				item.add(new Label("name", dt.getName()));
 
+				item.add(new AjaxLink<Void>("addDegreeCourse") {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						getModal().setContent(new CreateDegreeCourse(getModal().getContentId(), dt, Department.this));
+						getModal().setTitle("Studiengang anlegen");
+						getModal().setInitialHeight(150);
+						getModal().setInitialWidth(400);
+						getModal().show(target);
+					}
+
+				}.add(new Image("imageAddDegreeCourse", new SharedResourceReference(BasePage.class, "../../gfx/add.png"))));
+				
+				
 				item.add(new AjaxLink<Void>("editDepartment") {
 
 					private static final long serialVersionUID = 1L;
@@ -133,7 +147,7 @@ public class Department extends BasePage {
 							}
 
 						});
-						getModal().setTitle("Universität löschen");
+						getModal().setTitle("Fakultät löschen");
 						getModal().setInitialHeight(150);
 						getModal().setInitialWidth(400);
 						getModal().show(target);
