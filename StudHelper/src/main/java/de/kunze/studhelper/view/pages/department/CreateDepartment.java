@@ -6,68 +6,65 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
-import de.kunze.studhelper.view.pages.base.BasePage;
+import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 import de.kunze.studhelper.view.pages.university.University;
 import de.kunze.studhelper.view.rest.RestDepartment;
 
-public class CreateDepartment extends BasePage {
+public class CreateDepartment extends Panel {
 
 	private static final long serialVersionUID = 1L;
 
 	private Form<DepartmentTransfer> form;
 
-	private boolean isNew = true;
+	private UniversityTransfer ut = null;
 
-	private String uniName = null;
-	private Long uniId = null;
+	private DepartmentTransfer dt = null;
 
-	private String depName = null;
-	private Long depId = null;
+	private Department depPage = null;
 
-	public CreateDepartment() {
+	private University uniPage = null;
+
+	private RestDepartment restDep = null;
+
+	public CreateDepartment(String id, UniversityTransfer ut, University uniPage) {
+		super(id);
+		this.ut = ut;
+		this.uniPage = uniPage;
+		this.restDep = new RestDepartment();
+
 		initComponents();
 	}
 
-	public CreateDepartment(final PageParameters parameters) {
+	public CreateDepartment(String id, UniversityTransfer ut, Department depPage) {
+		super(id);
+		this.ut = ut;
+		this.depPage = depPage;
+		this.restDep = new RestDepartment();
 
-		try {
+		initComponents();
+	}
 
-			String update = parameters.get("update").toString();
-			this.uniName = parameters.get("uniName").toString();
-			this.uniId = new Long(parameters.get("uniId").toInteger());
-
-			this.depName = parameters.get("depName").toString();
-			this.depId = new Long(parameters.get("depId").toInteger());
-
-			if ("1".equals(update)) {
-				this.isNew = false;
-			}
-
-		} catch (Exception e) {
-			// Well, we have no Parameters, that's not a fault...
-		}
+	public CreateDepartment(String id, UniversityTransfer ut, DepartmentTransfer dt, Department depPage) {
+		super(id);
+		this.ut = ut;
+		this.dt = dt;
+		this.depPage = depPage;
+		this.restDep = new RestDepartment();
 
 		initComponents();
 	}
 
 	private void initComponents() {
-
-		this.form = new Form<DepartmentTransfer>("createDepartmentForm",
-				new CompoundPropertyModel<DepartmentTransfer>(
-						new DepartmentTransfer()));
+		this.form = new Form<DepartmentTransfer>("createDepartmentForm", new CompoundPropertyModel<DepartmentTransfer>(new DepartmentTransfer()));
 
 		this.form.add(new TextField<String>("name"));
 
-		if (this.depName != null) {
-			this.form.getModel().getObject().setName(this.depName);
-		}
-
-		if (this.depId != null) {
-			this.form.getModel().getObject().setId(this.depId);
+		if (this.dt != null) {
+			this.form.setModelObject(this.dt);
 		}
 
 		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
@@ -82,31 +79,33 @@ public class CreateDepartment extends BasePage {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 
-				final DepartmentTransfer dt = (DepartmentTransfer) form
-						.getModelObject();
+				final DepartmentTransfer newDepartment = (DepartmentTransfer) form.getModelObject();
 
-				/** Jetzt Speichern! */
-				RestDepartment rest = new RestDepartment();
+				if (dt == null) {
+					if (restDep.createDepartment(ut.getId().toString(), newDepartment)) {
 
-				if (isNew) {
-					if (rest.createDepartment(uniId.toString(), dt)) {
+						if (depPage != null) {
+							depPage.refreshDepartment();
+							target.add(depPage.getPanel());
 
-						PageParameters parameters = new PageParameters();
-						parameters.add("uniId", uniId.toString());
-
-						setResponsePage(Department.class, parameters);
+							depPage.getModal().close(target);
+						} else {
+							uniPage.getModal().close(target);
+						}
 					} else {
 						/** Fehler anzeigen */
 						error("Es ist ein Fehler beim Erstellen der Fakultät aufgetreten!");
 					}
 				} else {
-					if (rest.updateDepartment(dt)) {
-						/** Zu University wechseln */
+					if (restDep.updateDepartment(newDepartment)) {
+						if (depPage != null) {
+							depPage.refreshDepartment();
+							target.add(depPage.getPanel());
 
-						PageParameters parameters = new PageParameters();
-						parameters.add("uniId", uniId.toString());
-
-						setResponsePage(Department.class, parameters);
+							depPage.getModal().close(target);
+						} else {
+							uniPage.getModal().close(target);
+						}
 					} else {
 						/** Fehler anzeigen */
 						error("Es ist ein Fehler beim Aktualisieren der Fakultät aufgetreten!");
@@ -121,10 +120,8 @@ public class CreateDepartment extends BasePage {
 			}
 		});
 
-		add(new Label("msgCreateDepartment", "Fakultät für " + this.uniName
-				+ " erstellen"));
+		add(new Label("msgCreateDepartment", "Fakultät für " + ut.getName() + " erstellen"));
 		add(this.form);
-
 	}
 
 }

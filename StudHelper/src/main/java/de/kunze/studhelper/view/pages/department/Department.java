@@ -66,10 +66,10 @@ public class Department extends BasePage {
 		list.addAll(restUni.getDepartmentsForUniversity(ut.getId().toString()));
 	}
 
-	protected void refreshDepartment(UniversityTransfer university) {
-		list.clear();
-		list.addAll(restUni.getDepartmentsForUniversity(university.getId().toString()));
-	}
+//	protected void refreshDepartment(UniversityTransfer university) {
+//		list.clear();
+//		list.addAll(restUni.getDepartmentsForUniversity(university.getId().toString()));
+//	}
 
 	private void initComponents() {
 
@@ -95,7 +95,7 @@ public class Department extends BasePage {
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						getModal().setContent(new CreateDepartment(getModal().getContentId(), ddc.getModelObject(), dt));
+						getModal().setContent(new CreateDepartment(getModal().getContentId(), ddc.getModelObject(), dt, Department.this));
 						getModal().setTitle("Fakultät anlegen");
 						getModal().setInitialHeight(150);
 						getModal().setInitialWidth(400);
@@ -123,7 +123,7 @@ public class Department extends BasePage {
 									@Override
 									public void onClick(AjaxRequestTarget target) {
 										restDep.deleteDepartment(Long.toString(dt.getId()));
-										refreshDepartment(ddc.getModelObject());
+										refreshDepartment();
 
 										target.add(panel);
 										modal.close(target);
@@ -156,7 +156,7 @@ public class Department extends BasePage {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				getModal().setContent(new CreateDepartment(getModal().getContentId(), ddc.getModelObject()));
+				getModal().setContent(new CreateDepartment(getModal().getContentId(), ddc.getModelObject(), Department.this));
 				getModal().setTitle("Fakultät anlegen");
 				getModal().setInitialHeight(150);
 				getModal().setInitialWidth(400);
@@ -181,11 +181,10 @@ public class Department extends BasePage {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
 
-				final UniversityTransfer newUt = ddc.getModel().getObject();
-
-				if (newUt != null) {
-					list.clear();
-					list.addAll(restUni.getDepartmentsForUniversity(newUt.getId().toString()));
+				ut = ddc.getModelObject();
+				
+				if (ut != null) {
+					refreshDepartment();
 				}
 
 				target.add(panel);
@@ -206,88 +205,13 @@ public class Department extends BasePage {
 		this.ut = university;
 	}
 
-	private class CreateDepartment extends Panel {
-
-		private static final long serialVersionUID = 1L;
-
-		private Form<DepartmentTransfer> form;
-
-		private UniversityTransfer ut = null;
-
-		private DepartmentTransfer dt = null;
-
-		public CreateDepartment(String id, UniversityTransfer ut) {
-			super(id);
-			this.ut = ut;
-
-			initComponents();
-		}
-
-		public CreateDepartment(String id, UniversityTransfer ut, DepartmentTransfer dt) {
-			super(id);
-			this.ut = ut;
-			this.dt = dt;
-
-			initComponents();
-		}
-
-		private void initComponents() {
-			this.form = new Form<DepartmentTransfer>("createDepartmentForm", new CompoundPropertyModel<DepartmentTransfer>(new DepartmentTransfer()));
-
-			this.form.add(new TextField<String>("name"));
-
-			if (this.dt != null) {
-				this.form.setModelObject(this.dt);
-			}
-
-			final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
-			feedbackPanel.setOutputMarkupId(true);
-
-			add(feedbackPanel);
-
-			this.form.add(new AjaxSubmitLink("submitDepartmentForm", this.form) {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-
-					final DepartmentTransfer newDepartment = (DepartmentTransfer) form.getModelObject();
-
-					if (dt == null) {
-						if (restDep.createDepartment(ut.getId().toString(), newDepartment)) {
-
-							refreshDepartment(ut);
-							target.add(panel);
-
-							modal.close(target);
-						} else {
-							/** Fehler anzeigen */
-							error("Es ist ein Fehler beim Erstellen der Fakultät aufgetreten!");
-						}
-					} else {
-						if (restDep.updateDepartment(newDepartment)) {
-							refreshDepartment(ut);
-							target.add(panel);
-
-							modal.close(target);
-						} else {
-							/** Fehler anzeigen */
-							error("Es ist ein Fehler beim Aktualisieren der Fakultät aufgetreten!");
-						}
-					}
-
-				}
-
-				@Override
-				protected void onError(AjaxRequestTarget target, Form<?> form) {
-					target.add(feedbackPanel);
-				}
-			});
-
-			add(new Label("msgCreateDepartment", "Fakultät für " + ut.getName() + " erstellen"));
-			add(this.form);
-		}
-
+	public WebMarkupContainer getPanel() {
+		return panel;
 	}
+
+	public void setPanel(WebMarkupContainer panel) {
+		this.panel = panel;
+	}
+
+	
 }

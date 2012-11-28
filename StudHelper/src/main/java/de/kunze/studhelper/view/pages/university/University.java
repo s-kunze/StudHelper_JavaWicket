@@ -20,6 +20,8 @@ import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 import de.kunze.studhelper.view.pages.base.BasePage;
+import de.kunze.studhelper.view.pages.department.CreateDepartment;
+import de.kunze.studhelper.view.pages.department.Department;
 import de.kunze.studhelper.view.rest.RestUniversity;
 
 public class University extends BasePage {
@@ -58,6 +60,22 @@ public class University extends BasePage {
 				final UniversityTransfer ut = (UniversityTransfer) item.getModelObject();
 				item.add(new Label("name", ut.getName()));
 				
+				item.add(new AjaxLink<Void>("addDepartment") {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						getModal().setContent(new CreateDepartment(getModal().getContentId(), ut, University.this));
+						getModal().setTitle("Universität anlegen");
+						getModal().setInitialHeight(150);
+						getModal().setInitialWidth(400);
+						getModal().show(target);
+					}
+
+				}.add(new Image("imageAddDepartment", new SharedResourceReference(BasePage.class, "../../gfx/add.png"))));
+				
+				
 				item.add(new AjaxLink<Void>("editUniversity") {
 
 					private static final long serialVersionUID = 1L;
@@ -72,6 +90,7 @@ public class University extends BasePage {
 					}
 
 				}.add(new Image("imageEditUniversity", new SharedResourceReference(BasePage.class, "../../gfx/edit.png"))));
+				
 				item.add(new AjaxLink<Void>("deleteUniversity") {
 
 					private static final long serialVersionUID = 1L;
