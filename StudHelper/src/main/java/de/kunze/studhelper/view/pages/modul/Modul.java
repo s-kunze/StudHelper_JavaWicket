@@ -1,4 +1,4 @@
-package de.kunze.studhelper.view.pages.part;
+package de.kunze.studhelper.view.pages.modul;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,101 +18,84 @@ import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.resource.SharedResourceReference;
 
-import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
+import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 import de.kunze.studhelper.view.pages.base.BasePage;
-import de.kunze.studhelper.view.pages.modul.CreateModul;
-import de.kunze.studhelper.view.rest.RestDegreeCourse;
+import de.kunze.studhelper.view.rest.RestModul;
 import de.kunze.studhelper.view.rest.RestPart;
 
-public class Part extends BasePage {
+public class Modul extends BasePage {
 
 	private static final long serialVersionUID = 1L;
 
-	private DataView<PartTransfer> dataView = null;
+	private DataView<ModulTransfer> dataView = null;
 
-	private List<PartTransfer> list = null;
+	private List<ModulTransfer> list = null;
 
-	private DegreeCourseTransfer dt = null;
+	private PartTransfer pt = null;
 
-	private DropDownChoice<DegreeCourseTransfer> ddc;
+	private DropDownChoice<PartTransfer> ddc;
 
-	private RestDegreeCourse restDeg = null;
 	private RestPart restPar = null;
+	private RestModul restMod = null;
 
 	private WebMarkupContainer panel = null;
 
-	public Part() {
-		this.restDeg = new RestDegreeCourse();
+	public Modul() {
 		this.restPar = new RestPart();
+		this.restMod = new RestModul();
 
 		initComponents();
 	}
 
-	public Part(DegreeCourseTransfer dt) {
-		this.dt = dt;
+	public Modul(PartTransfer pt) {
+		this.pt = pt;
 
-		this.restDeg = new RestDegreeCourse();
 		this.restPar = new RestPart();
+		this.restMod = new RestModul();
 
 		initComponents();
 	}
 
-	protected void refreshPart() {
+	protected void refreshModul() {
 		list.clear();
-		list.addAll(restDeg.getPartForDegreeCourse(dt.getId().toString()));
+		list.addAll(restPar.getModulForPart(pt.getId().toString()));
 	}
 
 	private void initComponents() {
 
-		if (this.dt == null) {
-			this.list = new ArrayList<PartTransfer>();
+		if (this.pt == null) {
+			this.list = new ArrayList<ModulTransfer>();
 		} else {
-			DegreeCourseTransfer ut = restDeg.getDegreeCourse(this.dt.getId().toString());
-			this.list = restDeg.getPartForDegreeCourse(dt.getId().toString());
+			PartTransfer pt = restPar.getPart(this.pt.getId().toString());
+			this.list = restPar.getModulForPart(pt.getId().toString());
 		}
 
 		panel = new WebMarkupContainer("dataviewPanel");
 
-		this.dataView = new DataView<PartTransfer>("partTable", new ListDataProvider<PartTransfer>(list)) {
+		this.dataView = new DataView<ModulTransfer>("modulTable", new ListDataProvider<ModulTransfer>(list)) {
 			private static final long serialVersionUID = 1L;
 
-			public void populateItem(final Item<PartTransfer> item) {
-				final PartTransfer part = (PartTransfer) item.getModelObject();
-				item.add(new Label("name", part.getName()));
-				item.add(new Label("cp", part.getCreditPoints().toString()));
+			public void populateItem(final Item<ModulTransfer> item) {
+				final ModulTransfer modul = (ModulTransfer) item.getModelObject();
+				item.add(new Label("name", modul.getName()));
+				item.add(new Label("cp", modul.getCreditPoints().toString()));
 
-				item.add(new AjaxLink<Void>("addModul") {
+				item.add(new AjaxLink<Void>("editModul") {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						getModal().setContent(new CreateModul(getModal().getContentId(), part, Part.this));
+						getModal().setContent(new CreateModul(getModal().getContentId(), ddc.getModelObject(), modul, Modul.this));
 						getModal().setTitle("Modul anlegen");
 						getModal().setInitialHeight(150);
 						getModal().setInitialWidth(400);
 						getModal().show(target);
 					}
 
-				}.add(new Image("imageAddModul", new SharedResourceReference(BasePage.class, "../../gfx/add.png"))));
-				
-				
-				item.add(new AjaxLink<Void>("editPart") {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						getModal().setContent(new CreatePart(getModal().getContentId(), ddc.getModelObject(), part, Part.this));
-						getModal().setTitle("Bereich anlegen");
-						getModal().setInitialHeight(150);
-						getModal().setInitialWidth(400);
-						getModal().show(target);
-					}
-
-				}.add(new Image("imageEditPart", new SharedResourceReference(BasePage.class, "../../gfx/edit.png"))));
-				item.add(new AjaxLink<Void>("deletePart") {
+				}.add(new Image("imageEditModul", new SharedResourceReference(BasePage.class, "../../gfx/edit.png"))));
+				item.add(new AjaxLink<Void>("deleteModul") {
 
 					private static final long serialVersionUID = 1L;
 
@@ -130,8 +113,10 @@ public class Part extends BasePage {
 
 									@Override
 									public void onClick(AjaxRequestTarget target) {
-										restPar.deletePart(Long.toString(part.getId()));
-										refreshPart();
+										Long id = modul.getId();
+										String strId = Long.toString(id);
+										restMod.deleteModul(strId);
+										refreshModul();
 
 										target.add(panel);
 										modal.close(target);
@@ -141,13 +126,13 @@ public class Part extends BasePage {
 							}
 
 						});
-						getModal().setTitle("Bereich löschen");
+						getModal().setTitle("Modul löschen");
 						getModal().setInitialHeight(150);
 						getModal().setInitialWidth(400);
 						getModal().show(target);
 					}
 
-				}.add(new Image("imageDeletePart", new SharedResourceReference(BasePage.class, "../../gfx/delete.png"))));
+				}.add(new Image("imageDeleteModul", new SharedResourceReference(BasePage.class, "../../gfx/delete.png"))));
 			}
 		};
 
@@ -158,14 +143,14 @@ public class Part extends BasePage {
 
 		add(panel);
 
-		add(new AjaxLink<Void>("newPart") {
+		add(new AjaxLink<Void>("newModul") {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				getModal().setContent(new CreatePart(getModal().getContentId(), ddc.getModelObject(), Part.this));
-				getModal().setTitle("Bereich anlegen");
+				getModal().setContent(new CreateModul(getModal().getContentId(), ddc.getModelObject(), Modul.this));
+				getModal().setTitle("Modul anlegen");
 				getModal().setInitialHeight(150);
 				getModal().setInitialWidth(400);
 				getModal().show(target);
@@ -173,12 +158,12 @@ public class Part extends BasePage {
 
 		});
 
-		List<DegreeCourseTransfer> degreeCourses = restDeg.getDegreeCourses();
+		List<PartTransfer> parts = restPar.getParts();
 
-		this.ddc = new DropDownChoice<DegreeCourseTransfer>("ddcPart", new CompoundPropertyModel<DegreeCourseTransfer>(dt), degreeCourses,
-				new ChoiceRenderer<DegreeCourseTransfer>("name", "id"));
+		this.ddc = new DropDownChoice<PartTransfer>("ddcModul", new CompoundPropertyModel<PartTransfer>(pt), parts,
+				new ChoiceRenderer<PartTransfer>("name", "id"));
 
-		this.ddc.setModelObject(dt);
+		this.ddc.setModelObject(pt);
 
 		this.ddc.setOutputMarkupId(true);
 
@@ -188,10 +173,10 @@ public class Part extends BasePage {
 
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
-				dt = ddc.getModelObject();
+				pt = ddc.getModelObject();
 
-				if (dt != null) {
-					refreshPart();
+				if (pt != null) {
+					refreshModul();
 				}
 
 				target.add(panel);
@@ -211,5 +196,5 @@ public class Part extends BasePage {
 	public void setPanel(WebMarkupContainer panel) {
 		this.panel = panel;
 	}
-
+	
 }

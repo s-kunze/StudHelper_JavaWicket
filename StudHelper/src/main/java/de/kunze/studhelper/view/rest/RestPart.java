@@ -30,7 +30,7 @@ public class RestPart extends RestUtil {
 		return this.webResource.path(PART).path(id).accept(MediaType.APPLICATION_JSON).get(PartTransfer.class);
 	}
 
-	public List<PartTransfer> getDegreeCourses() {
+	public List<PartTransfer> getParts() {
 		try {
 			String json = this.webResource.path(PART).accept(MediaType.APPLICATION_JSON).get(String.class);
 			return mapper.readValue(json, new TypeReference<List<PartTransfer>>() {

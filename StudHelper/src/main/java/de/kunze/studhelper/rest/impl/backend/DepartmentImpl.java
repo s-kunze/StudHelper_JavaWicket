@@ -8,15 +8,22 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.Department;
+import de.kunze.studhelper.rest.models.backend.Modul;
+import de.kunze.studhelper.rest.models.backend.Part;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.ressource.backend.DepartmentRessource;
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
+import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
 public class DepartmentImpl implements DepartmentRessource {
 
@@ -162,6 +169,36 @@ public class DepartmentImpl implements DepartmentRessource {
 		daoDep.close();
 		daoDeg.close();
 		return Response.serverError().build();
+	}
+
+	public List<ModulTransfer> getModulsForDepartment(Long id) {
+		BaseDao<Department> daoDep = new BaseDao<Department>(Department.class);
+		
+		//Studiengänge herausfinden
+		Department department = daoDep.get(id);
+		List<DegreeCourse> degreeCourses = department.getDegreecourses();
+		
+		//Für jeden Studiengang bereiche finden
+		List<Part> parts = new ArrayList<Part>();
+		
+		for(DegreeCourse degreeCourse : degreeCourses) {
+			parts.addAll(degreeCourse.getParts());
+		}
+		
+		//Für jeden Bereich Modul finden
+		List<ModulTransfer> result = new ArrayList<ModulTransfer>();
+		
+		for(Part part : parts) {
+			List<Modul> modules = part.getModule();
+			
+			for(Modul modul : modules) {
+				result.add(modul.transform());
+			}
+			
+		}
+		
+		//zurückgeben
+		return result;
 	}
 
 }
