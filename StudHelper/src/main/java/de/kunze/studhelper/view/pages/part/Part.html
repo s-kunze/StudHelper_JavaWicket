@@ -8,7 +8,7 @@
 	<wicket:extend>
 
 		<form wicket:id="formSelect">
-			<select wicket:id="ddcDepartment">
+			<select wicket:id="ddcPart">
 			</select>
 		</form>
 
@@ -22,25 +22,22 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr wicket:id="degreeCourseTable">
-						<td><span wicket:id="name">Name Deg</span></td>
-						<td><span wicket:id="cp">CreditPoints Deg</span></td>
+					<tr wicket:id="partTable">
+						<td><span wicket:id="name">Name Part</span></td>
+						<td><span wicket:id="cp">CreditPoints Part</span></td>
 						<td>
-							<a href="#" wicket:id="addPart"> <img class="icon"
-								wicket:id="imageAddPart" />
-							</a>
-							<a href="#" wicket:id="editDegreeCourse"> <img class="icon"
-								wicket:id="imageEditDegreeCourse" />
+							<a href="#" wicket:id="editPart"> <img class="icon"
+								wicket:id="imageEditPart" />
 							</a> 
-							<a href="#" wicket:id="deleteDegreeCourse"> <img class="icon"
-								wicket:id="imageDeleteDegreeCourse" />
+							<a href="#" wicket:id="deletePart"> <img class="icon"
+								wicket:id="imageDeletePart" />
 						</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<a href="#" wicket:id="newDegreeCourse">Neuen Studiengang anlegen!</a>
+		<a href="#" wicket:id="newPart">Neuen Bereich anlegen!</a>
 
 	</wicket:extend>
 

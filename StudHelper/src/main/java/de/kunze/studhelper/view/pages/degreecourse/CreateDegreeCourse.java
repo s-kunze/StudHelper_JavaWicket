@@ -8,16 +8,11 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
-import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
-import de.kunze.studhelper.view.pages.base.BasePage;
 import de.kunze.studhelper.view.pages.department.Department;
-import de.kunze.studhelper.view.pages.university.University;
 import de.kunze.studhelper.view.rest.RestDegreeCourse;
-import de.kunze.studhelper.view.rest.RestDepartment;
 
 public class CreateDegreeCourse extends Panel {
 

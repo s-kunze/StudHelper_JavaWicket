@@ -73,7 +73,7 @@ public class PartImpl implements PartRessource {
 		Part par = part.transform();
 		par.setDegreeCourse(dao.get(par.getId()).getDegreeCourse());
 		
-		if (dao.update(part.transform())) {
+		if (dao.update(par)) {
 			dao.close();
 			return Response.status(Status.NO_CONTENT).build();
 		} else {

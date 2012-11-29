@@ -1,4 +1,4 @@
-package de.kunze.studhelper.view.pages.degreecourse;
+package de.kunze.studhelper.view.pages.part;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,103 +20,87 @@ import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
+import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 import de.kunze.studhelper.view.pages.base.BasePage;
-import de.kunze.studhelper.view.pages.part.CreatePart;
+import de.kunze.studhelper.view.pages.base.BasePage.ConfirmPanel;
+import de.kunze.studhelper.view.pages.degreecourse.CreateDegreeCourse;
+import de.kunze.studhelper.view.pages.degreecourse.DegreeCourse;
 import de.kunze.studhelper.view.rest.RestDegreeCourse;
 import de.kunze.studhelper.view.rest.RestDepartment;
+import de.kunze.studhelper.view.rest.RestPart;
 
-public class DegreeCourse extends BasePage {
+public class Part extends BasePage {
 
 	private static final long serialVersionUID = 1L;
 
-	private DataView<DegreeCourseTransfer> dataView = null;
+	private DataView<PartTransfer> dataView = null;
 
-	private List<DegreeCourseTransfer> list = null;
+	private List<PartTransfer> list = null;
 
-	private DepartmentTransfer dt = null;
+	private DegreeCourseTransfer dt = null;
 
-	private DropDownChoice<DepartmentTransfer> ddc;
+	private DropDownChoice<DegreeCourseTransfer> ddc;
 
-	private RestDepartment restDep = null;
 	private RestDegreeCourse restDeg = null;
+	private RestPart restPar = null;
 
 	private WebMarkupContainer panel = null;
 
-	public DegreeCourse() {
-		this.restDep = new RestDepartment();
+	public Part() {
 		this.restDeg = new RestDegreeCourse();
+		this.restPar = new RestPart();
 
 		initComponents();
 	}
 
-	public DegreeCourse(DepartmentTransfer dt) {
+	public Part(DegreeCourseTransfer dt) {
 		this.dt = dt;
 
-		this.restDep = new RestDepartment();
 		this.restDeg = new RestDegreeCourse();
+		this.restPar = new RestPart();
 
 		initComponents();
 	}
 
-	protected void refreshDegreeCourse() {
+	protected void refreshPart() {
 		list.clear();
-		list.addAll(restDep.getDegreeCourseForDepartment(dt.getId().toString()));
+		list.addAll(restDeg.getPartForDegreeCourse(dt.getId().toString()));
 	}
 
 	private void initComponents() {
 
 		if (this.dt == null) {
-			this.list = new ArrayList<DegreeCourseTransfer>();
+			this.list = new ArrayList<PartTransfer>();
 		} else {
-			DepartmentTransfer dt = restDep.getDepartment(this.dt.getId().toString());
-			this.list = restDep.getDegreeCourseForDepartment(dt.getId().toString());
+			DegreeCourseTransfer ut = restDeg.getDegreeCourse(this.dt.getId().toString());
+			this.list = restDeg.getPartForDegreeCourse(dt.getId().toString());
 		}
 
 		panel = new WebMarkupContainer("dataviewPanel");
 
-		this.dataView = new DataView<DegreeCourseTransfer>("degreeCourseTable",
-				new ListDataProvider<DegreeCourseTransfer>(list)) {
+		this.dataView = new DataView<PartTransfer>("partTable", new ListDataProvider<PartTransfer>(list)) {
 			private static final long serialVersionUID = 1L;
 
-			public void populateItem(final Item<DegreeCourseTransfer> item) {
-				final DegreeCourseTransfer dct = (DegreeCourseTransfer) item
-						.getModelObject();
-				item.add(new Label("name", dct.getName()));
-				item.add(new Label("cp", dct.getCreditPoints().toString()));
+			public void populateItem(final Item<PartTransfer> item) {
+				final PartTransfer part = (PartTransfer) item.getModelObject();
+				item.add(new Label("name", part.getName()));
+				item.add(new Label("cp", part.getCreditPoints().toString()));
 
-				item.add(new AjaxLink<Void>("addPart") {
+				item.add(new AjaxLink<Void>("editPart") {
 
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public void onClick(AjaxRequestTarget target) {
-						getModal().setContent(new CreatePart(getModal().getContentId(), dct, DegreeCourse.this));
+						getModal().setContent(new CreatePart(getModal().getContentId(), ddc.getModelObject(), part, Part.this));
 						getModal().setTitle("Bereich anlegen");
 						getModal().setInitialHeight(150);
 						getModal().setInitialWidth(400);
 						getModal().show(target);
 					}
 
-				}.add(new Image("imageAddPart", new SharedResourceReference(BasePage.class, "../../gfx/add.png"))));
-				
-				
-				item.add(new AjaxLink<Void>("editDegreeCourse") {
-
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public void onClick(AjaxRequestTarget target) {
-						getModal().setContent(new CreateDegreeCourse(getModal().getContentId(), ddc.getModelObject(), dct, DegreeCourse.this));
-						getModal().setTitle("Studiengang anlegen");
-						getModal().setInitialHeight(150);
-						getModal().setInitialWidth(400);
-						getModal().show(target);
-					}
-
-				}.add(new Image("imageEditDegreeCourse",
-						new SharedResourceReference(BasePage.class,
-								"../../gfx/edit.png"))));
-				item.add(new AjaxLink<Void>("deleteDegreeCourse") {
+				}.add(new Image("imageEditPart", new SharedResourceReference(BasePage.class, "../../gfx/edit.png"))));
+				item.add(new AjaxLink<Void>("deletePart") {
 
 					private static final long serialVersionUID = 1L;
 
@@ -134,8 +118,8 @@ public class DegreeCourse extends BasePage {
 
 									@Override
 									public void onClick(AjaxRequestTarget target) {
-										restDeg.deleteDegreeCourse(Long.toString(dct.getId()));
-										refreshDegreeCourse();
+										restPar.deletePart(Long.toString(part.getId()));
+										refreshPart();
 
 										target.add(panel);
 										modal.close(target);
@@ -151,9 +135,7 @@ public class DegreeCourse extends BasePage {
 						getModal().show(target);
 					}
 
-				}.add(new Image("imageDeleteDegreeCourse",
-						new SharedResourceReference(BasePage.class,
-								"../../gfx/delete.png"))));
+				}.add(new Image("imageDeletePart", new SharedResourceReference(BasePage.class, "../../gfx/delete.png"))));
 			}
 		};
 
@@ -164,26 +146,25 @@ public class DegreeCourse extends BasePage {
 
 		add(panel);
 
-		add(new AjaxLink<Void>("newDegreeCourse") {
+		add(new AjaxLink<Void>("newPart") {
 
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				getModal().setContent(new CreateDegreeCourse(getModal().getContentId(), ddc.getModelObject(), DegreeCourse.this));
-				getModal().setTitle("Studiengang anlegen");
+				getModal().setContent(new CreatePart(getModal().getContentId(), ddc.getModelObject(), Part.this));
+				getModal().setTitle("Bereich anlegen");
 				getModal().setInitialHeight(150);
 				getModal().setInitialWidth(400);
 				getModal().show(target);
 			}
 
 		});
-		
-		List<DepartmentTransfer> departments = restDep.getDepartments();
 
-		this.ddc = new DropDownChoice<DepartmentTransfer>("ddcDepartment",
-				new CompoundPropertyModel<DepartmentTransfer>(dt), departments,
-				new ChoiceRenderer<DepartmentTransfer>("name", "id"));
+		List<DegreeCourseTransfer> degreeCourses = restDeg.getDegreeCourses();
+
+		this.ddc = new DropDownChoice<DegreeCourseTransfer>("ddcPart", new CompoundPropertyModel<DegreeCourseTransfer>(dt), degreeCourses,
+				new ChoiceRenderer<DegreeCourseTransfer>("name", "id"));
 
 		this.ddc.setModelObject(dt);
 
@@ -196,9 +177,9 @@ public class DegreeCourse extends BasePage {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
 				dt = ddc.getModelObject();
-				
+
 				if (dt != null) {
-					refreshDegreeCourse();
+					refreshPart();
 				}
 
 				target.add(panel);
