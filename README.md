@@ -12,14 +12,15 @@ We need a MySQL-Database:
 
 With the following commands:
 
-shell> mysql --user=root -p
-mysql> CREATE DATABASE studhelper;
-mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP, ALTER
-    ->     ON studhelper.*
-    ->     TO 'studhelper'@'localhost'
-    ->     IDENTIFIED BY 'studhelper';
+    shell> mysql --user=root -p
+    mysql> CREATE DATABASE studhelper;
+
+    mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP, ALTER 
+           ->     ON studhelper.*
+           ->     TO 'studhelper'@'localhost'
+           ->     IDENTIFIED BY 'studhelper';
 
 We also need maven2 on the system.
 
 Then just run: 
-mvn jetty:run
+    mvn jetty:run
