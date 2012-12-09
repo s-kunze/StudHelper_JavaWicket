@@ -12,8 +12,11 @@ import com.sun.jersey.api.client.ClientResponse;
 
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
+import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
 public class RestDepartment extends RestUtil {
+
+	private static final long serialVersionUID = 1L;
 
 	public RestDepartment() {
 		super();
@@ -78,5 +81,19 @@ public class RestDepartment extends RestUtil {
     	
     	return is2xx(cr.getStatus());
     }
+	
+	public List<ModulTransfer> getModules(String id) {
+		try {
+			String json = this.webResource.path(DEPARTMENT).path(id).path(MODUL)
+					.accept(MediaType.APPLICATION_JSON).get(String.class);
+			return mapper.readValue(json,
+					new TypeReference<List<ModulTransfer>>() {
+					});
+		} catch (IOException e) {
+			logger.error("", e);
+		}
+
+		return new ArrayList<ModulTransfer>();
+	}
 	
 }

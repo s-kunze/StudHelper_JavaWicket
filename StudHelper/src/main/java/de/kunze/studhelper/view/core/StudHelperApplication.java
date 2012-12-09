@@ -6,6 +6,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import de.kunze.studhelper.view.pages.degreecourse.DegreeCourse;
 import de.kunze.studhelper.view.pages.department.Department;
 import de.kunze.studhelper.view.pages.index.Index;
+import de.kunze.studhelper.view.pages.lecture.Lecture;
 import de.kunze.studhelper.view.pages.modul.Modul;
 import de.kunze.studhelper.view.pages.part.Part;
 import de.kunze.studhelper.view.pages.university.University;
@@ -32,6 +33,7 @@ public class StudHelperApplication extends WebApplication {
         mountPage("/degreecourse", DegreeCourse.class);
         mountPage("/part", Part.class);
         mountPage("/modul", Modul.class);
+        mountPage("/lecture", Lecture.class);
     }
 
 }

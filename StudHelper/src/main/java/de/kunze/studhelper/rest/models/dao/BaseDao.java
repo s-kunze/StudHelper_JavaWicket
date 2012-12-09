@@ -11,6 +11,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.kunze.studhelper.rest.core.HibernateSession;
 
@@ -22,6 +24,8 @@ import de.kunze.studhelper.rest.core.HibernateSession;
  */
 public class BaseDao<T> implements IBaseDao<T> {
 
+	private static Logger logger = LoggerFactory.getLogger(BaseDao.class);
+	
 	private final Class<T> persistentClass;
 	
 	protected SessionFactory sessionFactory;
@@ -58,7 +62,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 			ta.commit();
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		
 		return result;
@@ -77,7 +81,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 			ta.commit();
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
-			e.printStackTrace();
+			logger.error("", e);
 		}
         
 		return result;
@@ -94,31 +98,27 @@ public class BaseDao<T> implements IBaseDao<T> {
 			} 
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		
 		return id;
 	}
 
 	public boolean update(T t) {
-		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
-		Session session = sessionFactory.openSession();
 	
 		Transaction ta = null;
 		try {
 			if (t != null) {
-				ta = session.beginTransaction();
-				session.update(t);
+				ta = this.session.beginTransaction();
+				this.session.merge(t);
+//				this.session.saveOrUpdate(t);
 				ta.commit();
 			} 
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
-			e.printStackTrace();
+			logger.error("", e);
 			
 			return false;
-		} finally {
-			session.close();
-			sessionFactory.close();
 		}
 		
 		return true;
@@ -134,7 +134,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 			} 
 		} catch(HibernateException e) {
 			if(ta != null) 	ta.rollback();
-			e.printStackTrace();
+			logger.error("", e);
 			return false;
 		}
 		

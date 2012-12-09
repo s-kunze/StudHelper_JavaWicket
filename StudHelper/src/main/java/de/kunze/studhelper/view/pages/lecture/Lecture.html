@@ -8,7 +8,7 @@
 	<wicket:extend>
 
 		<form wicket:id="formSelect">
-			<select wicket:id="ddcModul">
+			<select wicket:id="ddcLecture">
 			</select>
 		</form>
 
@@ -16,31 +16,28 @@
 			<table cellspacing="0" class="dataview">
 				<thead>
 					<tr>
-						<th>Modul</th>
+						<th>Vorlesung</th>
 						<th>Credit-Points</th>
 						<th>Optionen</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr wicket:id="modulTable">
-						<td><span wicket:id="name">Name Modul</span></td>
-						<td><span wicket:id="cp">CreditPoints Modul</span></td>
+					<tr wicket:id="lectureTable">
+						<td><span wicket:id="name">Name Vorlesung</span></td>
+						<td><span wicket:id="cp">CreditPoints Vorlesung</span></td>
 						<td>
-							<a href="#" wicket:id="addLecture"> <img class="icon"
-								wicket:id="imageAddLecture" />
-							</a>
-							<a href="#" wicket:id="editModul"> <img class="icon"
-								wicket:id="imageEditModul" />
+							<a href="#" wicket:id="editLecture"> <img class="icon"
+								wicket:id="imageEditLecture" />
 							</a> 
-							<a href="#" wicket:id="deleteModul"> <img class="icon"
-								wicket:id="imageDeleteModul" />
+							<a href="#" wicket:id="deleteLecture"> <img class="icon"
+								wicket:id="imageDeleteLecture" />
 						</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<a href="#" wicket:id="newModul">Neues Modul anlegen!</a>
+		<a href="#" wicket:id="newLecture">Neue Vorlesung anlegen!</a>
 
 	</wicket:extend>
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<wicket:panel>
+    
+    <span wicket:id="msgCreateLecture">Vorlesung für Modul erstellen</span>
+    
+    
+    
+    <form wicket:id="createLectureForm">
+    	
+<!--     	<select wicket:id="selectModul"></select> -->
+    
+    	<table>
+    		<tr>
+    			<td>Name:</td>
+    			<td><input wicket:id="name" type="text" /></td>
+    		</tr>
+    		<tr>
+    			<td>CreditPoints:</td>
+    			<td><input wicket:id="creditPoints" type="text" /></td>
+    		</tr>
+    		<tr>
+    			<td>Module:</td>
+    			<td><span wicket:id="modules"></span></td>
+    		</tr>
+    	</table>
+    		
+    	<input wicket:id="submitLectureForm" type="submit" value="Anlegen" />
+    </form>
+    	
+    <span wicket:id="feedback"></span>
+    	
+</wicket:panel>
+</html>

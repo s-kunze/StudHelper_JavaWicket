@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
@@ -69,4 +70,9 @@ public interface ModulRessource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response createLectureForModul(@PathParam("modul_id") Long id,
 			LectureTransfer lecture);
+	
+	@GET
+	@Path("{modul_id}/department")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public DepartmentTransfer getDepartmentForModul(@PathParam("modul_id") Long id);
 }

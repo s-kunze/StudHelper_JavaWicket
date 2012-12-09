@@ -11,11 +11,13 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import de.kunze.studhelper.rest.models.backend.Department;
 import de.kunze.studhelper.rest.models.backend.Lecture;
 import de.kunze.studhelper.rest.models.backend.Modul;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.models.dao.ModulDao;
 import de.kunze.studhelper.rest.ressource.backend.ModulRessource;
+import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
@@ -159,4 +161,16 @@ public class ModulImpl implements ModulRessource {
 		return Response.serverError().build();
 	}
 
+	public DepartmentTransfer getDepartmentForModul(Long id) {
+		ModulDao daoMod = new ModulDao();
+		Modul modul = daoMod.get(id);
+		Department department = modul.getPart().getDegreeCourse().getDepartment();
+		
+		if(department != null) {
+			return department.transform();
+		}
+		
+		return new DepartmentTransfer();
+	}
+	
 }

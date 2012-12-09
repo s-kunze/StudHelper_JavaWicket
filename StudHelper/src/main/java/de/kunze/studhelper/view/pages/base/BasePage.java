@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import de.kunze.studhelper.view.pages.degreecourse.DegreeCourse;
 import de.kunze.studhelper.view.pages.department.Department;
 import de.kunze.studhelper.view.pages.index.Index;
+import de.kunze.studhelper.view.pages.lecture.Lecture;
 import de.kunze.studhelper.view.pages.modul.Modul;
 import de.kunze.studhelper.view.pages.part.Part;
 import de.kunze.studhelper.view.pages.university.University;
@@ -32,6 +33,7 @@ public class BasePage extends WebPage {
 		add(new BookmarkablePageLink<String>("degreeCourse", DegreeCourse.class));
 		add(new BookmarkablePageLink<String>("part", Part.class));
 		add(new BookmarkablePageLink<String>("modul", Modul.class));
+		add(new BookmarkablePageLink<String>("lecture", Lecture.class));
 		
 		this.modal = new ModalWindow("uniModal");
 

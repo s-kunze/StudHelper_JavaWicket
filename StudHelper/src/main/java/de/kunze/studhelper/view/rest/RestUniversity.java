@@ -15,6 +15,8 @@ import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 
 public class RestUniversity extends RestUtil {
 
+	private static final long serialVersionUID = 1L;
+
 	public RestUniversity() {
 		super();
 	}

@@ -1,5 +1,7 @@
 package de.kunze.studhelper.view.rest;
 
+import java.io.Serializable;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,13 +12,13 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-//import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
-
-public class RestUtil {
+public class RestUtil implements Serializable {
 	
-	protected Client client;
-    protected ObjectMapper mapper = new ObjectMapper();
-    protected WebResource webResource;
+	private static final long serialVersionUID = 930264314114982125L;
+	
+	protected final Client client;
+    protected final static ObjectMapper mapper = new ObjectMapper();
+    protected final WebResource webResource;
 	
     protected Logger logger = LoggerFactory.getLogger(RestUtil.class);
     

@@ -10,10 +10,13 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.sun.jersey.api.client.ClientResponse;
 
+import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
 public class RestModul extends RestUtil{
+
+	private static final long serialVersionUID = 1L;
 
 	public RestModul() {
 		super();
@@ -66,6 +69,10 @@ public class RestModul extends RestUtil{
 				.delete(ClientResponse.class);
 
 		return is2xx(cr.getStatus());
+	}
+	
+	public DepartmentTransfer getDepartment(String id) {
+		return this.webResource.path(MODUL).path(id).path(DEPARTMENT).accept(MediaType.APPLICATION_JSON).get(DepartmentTransfer.class);
 	}
 	
 }
