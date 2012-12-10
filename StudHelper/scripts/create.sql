@@ -31,6 +31,10 @@
         drop 
         foreign key FK255BF3107DA7AA
 
+    alter table USER 
+        drop 
+        foreign key FK27E3CB107DA7AA
+
     drop table if exists DEGREECOURSE
 
     drop table if exists DEPARTMENT
@@ -112,6 +116,7 @@
         USER_LASTNAME varchar(255),
         USER_PASSWORD varchar(255),
         USER_USERNAME varchar(255),
+        degreeCourse_DEGREECOURSE_ID bigint,
         primary key (USER_ID)
     )
 
@@ -160,5 +165,11 @@
     alter table PART 
         add index FK255BF3107DA7AA (degreeCourse_DEGREECOURSE_ID), 
         add constraint FK255BF3107DA7AA 
+        foreign key (degreeCourse_DEGREECOURSE_ID) 
+        references DEGREECOURSE (DEGREECOURSE_ID)
+
+    alter table USER 
+        add index FK27E3CB107DA7AA (degreeCourse_DEGREECOURSE_ID), 
+        add constraint FK27E3CB107DA7AA 
         foreign key (degreeCourse_DEGREECOURSE_ID) 
         references DEGREECOURSE (DEGREECOURSE_ID)

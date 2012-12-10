@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
-import de.kunze.studhelper.rest.models.backend.Department;
 import de.kunze.studhelper.rest.models.backend.Part;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.ressource.backend.DegreeCourseRessource;

@@ -12,6 +12,7 @@ import de.kunze.studhelper.rest.impl.backend.ModulImpl;
 import de.kunze.studhelper.rest.impl.backend.PartImpl;
 import de.kunze.studhelper.rest.impl.backend.UniversityImpl;
 import de.kunze.studhelper.rest.impl.core.InfoImpl;
+import de.kunze.studhelper.rest.impl.user.UserImpl;
 
 public class StudHelperApplication extends Application {
 
@@ -25,6 +26,7 @@ public class StudHelperApplication extends Application {
 		s.add(PartImpl.class);
 		s.add(ModulImpl.class);
 		s.add(LectureImpl.class);
+		s.add(UserImpl.class);
 		
 		return s;
 	}

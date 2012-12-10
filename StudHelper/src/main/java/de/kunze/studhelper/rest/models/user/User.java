@@ -9,11 +9,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.LectureUser;
+import de.kunze.studhelper.rest.transfer.user.UserTransfer;
 
+/**
+ * TODO: Maybe we should use a Admin-user. Maybe Permsisions/Roles etc.
+ * 
+ * @author stefan
+ *
+ */
 @Entity
 @Table(name = "USER")
 public class User {
@@ -38,6 +47,9 @@ public class User {
 	@Column(name = "USER_CREDITPOINTS")
 	private Integer creditPoints;
 
+	@ManyToOne
+	private DegreeCourse degreeCourse;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user")
 	private Set<LectureUser> lectureUser = new HashSet<LectureUser>(0);
 
@@ -98,6 +110,24 @@ public class User {
 
 	public void setLectureUser(Set<LectureUser> lectureUser) {
 		this.lectureUser = lectureUser;
+	}
+	
+	public DegreeCourse getDegreeCourse() {
+		return degreeCourse;
+	}
+
+	public void setDegreeCourse(DegreeCourse degreeCourse) {
+		this.degreeCourse = degreeCourse;
+	}
+
+	public UserTransfer transform() {
+		UserTransfer result = new UserTransfer();
+		result.setId(this.id);
+		result.setFirstname(this.firstname);
+		result.setLastname(this.lastname);
+		result.setUsername(this.username);		
+		
+		return result;
 	}
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.kunze.studhelper.rest.models.user.User;
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 
 /**
@@ -37,6 +38,9 @@ public class DegreeCourse {
 	@OneToMany(mappedBy = "degreeCourse", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Part> parts;
 
+	@OneToMany(mappedBy = "degreeCourse", orphanRemoval = true, cascade = CascadeType.ALL)
+	private List<User> users;
+	
 	@ManyToOne
 	private Department department;
 
@@ -83,6 +87,14 @@ public class DegreeCourse {
 		this.department = department;
 	}
 	
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
 	public DegreeCourseTransfer transform() {
 		DegreeCourseTransfer dct = new DegreeCourseTransfer();
 		dct.setId(this.id);

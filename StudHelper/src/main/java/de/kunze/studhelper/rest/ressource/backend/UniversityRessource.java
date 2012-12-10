@@ -67,5 +67,5 @@ public interface UniversityRessource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response createDepartmentForUniversity(
 			@PathParam("university_id") Long id, DepartmentTransfer department);
-
+	
 }
