@@ -5,7 +5,7 @@
 
 <hibernate-configuration>
 	<session-factory>
-		<property name="show_sql">false</property>
+		<property name="show_sql">true</property>
 		<property name="format_sql">true</property>
 
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -14,7 +14,7 @@
 		<property name="hibernate.connection.username">studhelper</property>
 		<property name="hibernate.connection.password">studhelper</property>
 
-		<property name="hbm2ddl.auto">create</property>
+		<property name="hbm2ddl.auto">update</property>
 
 		<mapping class="de.kunze.studhelper.rest.models.backend.DegreeCourse" />
 		<mapping class="de.kunze.studhelper.rest.models.backend.Department" />

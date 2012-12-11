@@ -19,7 +19,7 @@ import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
 /**
  * 
- * @author stefan
+ * @author Stefan Kunze
  * 
  */
 @Path("/modul")
@@ -34,14 +34,13 @@ public interface ModulRessource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public ModulTransfer getModul(@PathParam("modul_id") Long id);
 
-	@POST
-	@Path("{modul_id}")
+	@PUT
+	@Path("{part_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createModul(@PathParam("modul_id") Long id,
-			ModulTransfer modul);
+	public Response createModul(@PathParam("part_id") Long id, ModulTransfer modul);
 
-	@PUT
+	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response updateModul(ModulTransfer modul);
@@ -54,23 +53,19 @@ public interface ModulRessource {
 	@GET
 	@Path("{modul_id}/lecture")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public List<LectureTransfer> getAllLectureForModul(
-			@PathParam("modul_id") Long id);
+	public List<LectureTransfer> getAllLectureForModul(@PathParam("modul_id") Long id);
 
 	@GET
 	@Path("{modul_id}/lecture/{lecture_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public LectureTransfer getLectureForModul(
-			@PathParam("modul_id") Long modulId,
-			@PathParam("lecture_id") Long lectureId);
+	public LectureTransfer getLectureForModul(@PathParam("modul_id") Long modulId, @PathParam("lecture_id") Long lectureId);
 
-	@POST
+	@PUT
 	@Path("{modul_id}/lecture")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createLectureForModul(@PathParam("modul_id") Long id,
-			LectureTransfer lecture);
-	
+	public Response createLectureForModul(@PathParam("modul_id") Long id, LectureTransfer lecture);
+
 	@GET
 	@Path("{modul_id}/department")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

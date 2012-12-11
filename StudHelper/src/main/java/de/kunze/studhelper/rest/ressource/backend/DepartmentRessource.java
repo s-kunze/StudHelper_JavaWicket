@@ -18,7 +18,7 @@ import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
 /**
- * This Interface shows the API for the department. You cann create, get, update
+ * This Interface shows the API for the department. You can create, get, update
  * and delete departments.
  * 
  * @author Stefan Kunze
@@ -60,11 +60,11 @@ public interface DepartmentRessource {
 	 * @return This Method returns 201 CREATED for success or 500 for
 	 *         Server-Error
 	 */
-	@POST
-	@Path("{department_id}")
+	@PUT
+	@Path("{university_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createDepartment(@PathParam("department_id") Long id, DepartmentTransfer department);
+	public Response createDepartment(@PathParam("university_id") Long id, DepartmentTransfer department);
 
 	/**
 	 * This Method updates a spezified Department 
@@ -72,7 +72,7 @@ public interface DepartmentRessource {
 	 * @param department the object from the Department
 	 * @return This method returns 204 NO CONTENT fro success or 500 for Server-Error
 	 */
-	@PUT
+	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response updateDepartment(DepartmentTransfer department);
@@ -116,7 +116,7 @@ public interface DepartmentRessource {
 	 * @param degreeCourse the object for saving in the DB
 	 * @return This method returns 201 CREATED for success, and 500 for Server-Error
 	 */
-	@POST
+	@PUT
 	@Path("{department_id}/degreecourse")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

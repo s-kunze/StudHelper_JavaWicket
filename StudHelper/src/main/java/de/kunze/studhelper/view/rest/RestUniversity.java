@@ -13,6 +13,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 
+/**
+ * 
+ * @author Stefan Kunze
+ *
+ */
 public class RestUniversity extends RestUtil {
 
 	private static final long serialVersionUID = 1L;
@@ -24,7 +29,7 @@ public class RestUniversity extends RestUtil {
 	public boolean createUniversity(UniversityTransfer u) {
 		ClientResponse cr = this.webResource.path(UNIVERSITY)
 				.type(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, u);
+				.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, u);
 
 		return is2xx(cr.getStatus());
 	}
@@ -67,7 +72,7 @@ public class RestUniversity extends RestUtil {
 	public boolean updateUniversity(UniversityTransfer u) {
 		ClientResponse cr = this.webResource.path(UNIVERSITY)
 				.type(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, u);
+				.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, u);
 
 		return is2xx(cr.getStatus());
 	}

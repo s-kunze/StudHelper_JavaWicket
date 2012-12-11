@@ -18,7 +18,7 @@ import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 
 /**
  * 
- * @author stefan
+ * @author Stefan Kunze
  * 
  */
 @Path("/part")
@@ -33,13 +33,13 @@ public interface PartRessource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public PartTransfer getPart(@PathParam("part_id") Long id);
 
-	@POST
-	@Path("{part_id}")
+	@PUT
+	@Path("{degreecourse_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createPart(@PathParam("part_id") Long id, PartTransfer part);
+	public Response createPart(@PathParam("degreecourse_id") Long id, PartTransfer part);
 
-	@PUT
+	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response updatePart(PartTransfer part);
@@ -52,20 +52,17 @@ public interface PartRessource {
 	@GET
 	@Path("{part_id}/modul")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public List<ModulTransfer> getAllModulesForPart(
-			@PathParam("part_id") Long id);
+	public List<ModulTransfer> getAllModulesForPart(@PathParam("part_id") Long id);
 
 	@GET
 	@Path("{part_id}/modul/{modul_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public ModulTransfer getModulForPart(@PathParam("part_id") Long partId,
-			@PathParam("modul_id") Long modulId);
+	public ModulTransfer getModulForPart(@PathParam("part_id") Long partId, @PathParam("modul_id") Long modulId);
 
-	@POST
+	@PUT
 	@Path("{part_id}/modul")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createModulForPart(@PathParam("part_id") Long id,
-			ModulTransfer modul);
+	public Response createModulForPart(@PathParam("part_id") Long id, ModulTransfer modul);
 
 }

@@ -16,6 +16,11 @@ import javax.ws.rs.core.Response;
 import de.kunze.studhelper.rest.transfer.user.NewUserTransfer;
 import de.kunze.studhelper.rest.transfer.user.UserTransfer;
 
+/**
+ * 
+ * @author Stefan Kunze
+ *
+ */
 @Path("/user")
 public interface UserRessource {
 
@@ -28,13 +33,13 @@ public interface UserRessource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public UserTransfer getUser(@PathParam("user_id") Long id);
 
-	@POST
+	@PUT
 	@Path("{university_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response createUser(@PathParam("university_id") Long id, NewUserTransfer newUser);
 
-	@PUT
+	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response updateUser(UserTransfer user);

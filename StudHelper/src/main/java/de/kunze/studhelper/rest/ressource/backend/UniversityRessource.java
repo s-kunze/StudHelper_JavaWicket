@@ -33,12 +33,12 @@ public interface UniversityRessource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public UniversityTransfer getUniversity(@PathParam("university_id") Long id);
 
-	@POST
+	@PUT
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response createUniversity(UniversityTransfer university);
 
-	@PUT
+	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response updateUniversity(UniversityTransfer university);
@@ -61,7 +61,7 @@ public interface UniversityRessource {
 			@PathParam("university_id") Long universityId,
 			@PathParam("department_id") Long departmentId);
 
-	@POST
+	@PUT
 	@Path("{university_id}/department")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

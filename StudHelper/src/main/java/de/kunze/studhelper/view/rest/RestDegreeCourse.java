@@ -13,6 +13,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 
+/**
+ * 
+ * @author Stefan Kunze
+ *
+ */
 public class RestDegreeCourse extends RestUtil {
 
 	private static final long serialVersionUID = 1L;
@@ -23,7 +28,7 @@ public class RestDegreeCourse extends RestUtil {
 
 	public boolean createDegreeCourse(String id, DegreeCourseTransfer d) {
 		ClientResponse cr = this.webResource.path(DEPARTMENT).path(id).path(DEGREECOURSE).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.post(ClientResponse.class, d);
+				.put(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}
@@ -58,7 +63,7 @@ public class RestDegreeCourse extends RestUtil {
 
 	public boolean updateDegreeCourse(DegreeCourseTransfer d) {
 		ClientResponse cr = this.webResource.path(DEGREECOURSE).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.put(ClientResponse.class, d);
+				.post(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}

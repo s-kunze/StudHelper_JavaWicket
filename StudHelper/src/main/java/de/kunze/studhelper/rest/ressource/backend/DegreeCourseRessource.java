@@ -18,7 +18,7 @@ import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 
 /**
  * 
- * @author stefan
+ * @author Stefan Kunze
  * 
  */
 @Path("/degreecourse")
@@ -27,20 +27,19 @@ public interface DegreeCourseRessource {
 	@GET
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public List<DegreeCourseTransfer> getAllDegreeCourse();
-	
+
 	@GET
 	@Path("{degreecourse_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public DegreeCourseTransfer getDegreeCourse(@PathParam("degreecourse_id") Long id);
 
-	@POST
-	@Path("{degreecourse_id}")
+	@PUT
+	@Path("{department_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createDegreeCourse(@PathParam("degreecourse_id") Long id,
-			DegreeCourseTransfer degreecourse);
+	public Response createDegreeCourse(@PathParam("department_id") Long id, DegreeCourseTransfer degreecourse);
 
-	@PUT
+	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response updateDegreeCourse(DegreeCourseTransfer degreecourse);
@@ -49,25 +48,21 @@ public interface DegreeCourseRessource {
 	@Path("{degreecourse_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response deleteDegreeCourse(@PathParam("degreecourse_id") Long id);
-	
+
 	@GET
 	@Path("{degreecourse_id}/part")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public List<PartTransfer> getAllPartsForDegreeCourse(
-			@PathParam("degreecourse_id") Long id);
+	public List<PartTransfer> getAllPartsForDegreeCourse(@PathParam("degreecourse_id") Long id);
 
 	@GET
 	@Path("{degreecourse_id}/part/{part_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public PartTransfer getPartForDegreeCourse(
-			@PathParam("degreecourse_id") Long degreeCourseId,
-			@PathParam("part_id") Long partId);
+	public PartTransfer getPartForDegreeCourse(@PathParam("degreecourse_id") Long degreeCourseId, @PathParam("part_id") Long partId);
 
-	@POST
+	@PUT
 	@Path("{degreecourse_id}/part")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createPartForDegreeCourse(
-			@PathParam("degreecourse_id") Long id, PartTransfer part);
-	
+	public Response createPartForDegreeCourse(@PathParam("degreecourse_id") Long id, PartTransfer part);
+
 }

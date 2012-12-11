@@ -14,6 +14,11 @@ import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
+/**
+ * 
+ * @author Stefan Kunze
+ *
+ */
 public class RestDepartment extends RestUtil {
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +30,7 @@ public class RestDepartment extends RestUtil {
 	public boolean createDepartment(String id, DepartmentTransfer d) {	
 		ClientResponse cr = this.webResource.path(UNIVERSITY).path(id).path(DEPARTMENT)
 				.type(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, d);
+				.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}
@@ -67,7 +72,7 @@ public class RestDepartment extends RestUtil {
 	public boolean updateDepartment(DepartmentTransfer d) {
 		ClientResponse cr = this.webResource.path(DEPARTMENT)
 				.type(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, d);
+				.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}

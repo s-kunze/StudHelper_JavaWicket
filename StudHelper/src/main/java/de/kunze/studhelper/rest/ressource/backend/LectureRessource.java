@@ -10,14 +10,16 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 
 /**
  * 
- * @author stefan
+ * @author Stefan Kunze
  * 
  */
 @Path("/lecture")
@@ -32,14 +34,13 @@ public interface LectureRessource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public LectureTransfer getLecture(@PathParam("lecture_id") Long id);
 
-	@POST
-	@Path("{lecture_id}")
+	@PUT
+	@Path("{modul_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createLecture(@PathParam("lecture_id") Long id,
-			LectureTransfer lecture);
+	public Response createLecture(@PathParam("modul_id") Long id, LectureTransfer lecture);
 
-	@PUT
+	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response updateLecture(LectureTransfer lecture);
@@ -48,5 +49,10 @@ public interface LectureRessource {
 	@Path("{lecture_id}")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response deleteLecture(@PathParam("lecture_id") Long id);
-	
+
+	@PUT
+	@Path("{lecture_id}/adduser/{user_id}")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response addUserToLecture(@Context UriInfo info, @PathParam("lecture_id") Long lectureId, @PathParam("user_id") Long userId);
 }

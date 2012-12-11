@@ -14,7 +14,12 @@ import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 
-public class RestModul extends RestUtil{
+/**
+ * 
+ * @author Stefan Kunze
+ * 
+ */
+public class RestModul extends RestUtil {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,8 +28,8 @@ public class RestModul extends RestUtil{
 	}
 
 	public boolean createModul(String id, ModulTransfer m) {
-		ClientResponse cr = this.webResource.path(PART).path(id).path(MODUL).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.post(ClientResponse.class, m);
+		ClientResponse cr = this.webResource.path(PART).path(id).path(MODUL).type(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, m);
 
 		return is2xx(cr.getStatus());
 	}
@@ -59,7 +64,7 @@ public class RestModul extends RestUtil{
 
 	public boolean updateModul(ModulTransfer d) {
 		ClientResponse cr = this.webResource.path(MODUL).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.put(ClientResponse.class, d);
+				.post(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}
@@ -70,9 +75,9 @@ public class RestModul extends RestUtil{
 
 		return is2xx(cr.getStatus());
 	}
-	
+
 	public DepartmentTransfer getDepartment(String id) {
 		return this.webResource.path(MODUL).path(id).path(DEPARTMENT).accept(MediaType.APPLICATION_JSON).get(DepartmentTransfer.class);
 	}
-	
+
 }

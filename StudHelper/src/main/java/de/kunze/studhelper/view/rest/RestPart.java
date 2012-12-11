@@ -13,6 +13,11 @@ import com.sun.jersey.api.client.ClientResponse;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
 import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 
+/**
+ * 
+ * @author Stefan Kunze
+ *
+ */
 public class RestPart extends RestUtil {
 
 	private static final long serialVersionUID = 1L;
@@ -23,7 +28,7 @@ public class RestPart extends RestUtil {
 
 	public boolean createPart(String id, PartTransfer d) {
 		ClientResponse cr = this.webResource.path(DEGREECOURSE).path(id).path(PART).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.post(ClientResponse.class, d);
+				.put(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}
@@ -58,7 +63,7 @@ public class RestPart extends RestUtil {
 
 	public boolean updatePart(PartTransfer d) {
 		ClientResponse cr = this.webResource.path(PART).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.put(ClientResponse.class, d);
+				.post(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}

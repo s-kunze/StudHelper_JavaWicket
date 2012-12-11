@@ -12,6 +12,11 @@ import com.sun.jersey.api.client.ClientResponse;
 
 import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 
+/**
+ * 
+ * @author Stefan Kunze
+ *
+ */
 public class RestLecture extends RestUtil {
 
 	private static final long serialVersionUID = 1L;
@@ -22,7 +27,7 @@ public class RestLecture extends RestUtil {
 
 	public boolean createLecture(String id, LectureTransfer l) {
 		ClientResponse cr = this.webResource.path(MODUL).path(id).path(LECTURE).type(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, l);
+				.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, l);
 
 		return is2xx(cr.getStatus());
 	}
@@ -45,7 +50,7 @@ public class RestLecture extends RestUtil {
 
 	public boolean updateLecture(LectureTransfer d) {
 		ClientResponse cr = this.webResource.path(LECTURE).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-				.put(ClientResponse.class, d);
+				.post(ClientResponse.class, d);
 
 		return is2xx(cr.getStatus());
 	}
