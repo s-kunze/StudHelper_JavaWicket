@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+    xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<body>
+
+	<!-- Content Start -->
+    <wicket:extend>
+    
+    	<a href="#" wicket:id="newUser">Neuen User anlegen!</a>
+    
+    	<div wicket:id="dataviewPanel" id="dataviewDiv">
+	    	<table cellspacing="0" class="dataview">
+	    		<thead>
+	    			<tr>
+	    				<th>Vorname</th>
+	    				<th>Nachname</th>
+	    				<th>Username</th>
+	    				<th>Optionen</th>
+	    			</tr>
+	    		</thead>
+			    <tbody>
+			       <tr wicket:id="userTable">
+			         <td><span wicket:id="firstname">Vorname</span></td>
+			         <td><span wicket:id="lastname">Nachname</span></td>
+			         <td><span wicket:id="username">Username</span></td>
+			         <td>	
+			         	<a href="#" wicket:id="editUser">
+			         		<img class="icon" wicket:id="imageEditUser" />
+			         	</a>
+			         	<a href="#" wicket:id="deleteUser">
+			         		<img class="icon" wicket:id="imageDeleteUser" />
+			         	</a>
+			         </td>
+			       </tr>
+			    </tbody>
+			</table>
+		</div>
+
+    </wicket:extend>
+    
+</body>
+</html>
