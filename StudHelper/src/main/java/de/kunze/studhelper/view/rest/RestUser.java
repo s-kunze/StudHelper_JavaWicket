@@ -21,8 +21,9 @@ public class RestUser extends RestUtil {
 		super();
 	}
 
-	public boolean createUser(NewUserTransfer newUser) {
-		ClientResponse cr = this.webResource.path(USER).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+	public boolean createUser(NewUserTransfer newUser, String id) {
+		logger.debug("Request - Create New User");
+		ClientResponse cr = this.webResource.path(USER).path(id).type(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 				.put(ClientResponse.class, newUser);
 
 		return is2xx(cr.getStatus());

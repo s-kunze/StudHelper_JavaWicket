@@ -33,7 +33,7 @@ public class LectureUserDao extends BaseDao<Lecture> {
 			}
 			lecturePersons.add(lectureUser);
 
-			this.session.saveOrUpdate(lecture);
+			this.session.merge(lecture);
 			ta.commit();
 		} catch (HibernateException e) {
 			if (ta != null) ta.rollback();

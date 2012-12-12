@@ -86,6 +86,22 @@ public class Lecture extends BasePage {
 				item.add(new Label("name", lecture.getName()));
 				item.add(new Label("cp", lecture.getCreditPoints().toString()));
 
+				item.add(new AjaxLink<Void>("addLectureUser") {
+
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public void onClick(AjaxRequestTarget target) {
+						getModal().setContent(new CreateLectureUser(getModal().getContentId(), lecture, Lecture.this));
+						getModal().setTitle("Vorlesung mit Benutzer anlegen");
+						getModal().setInitialHeight(400);
+						getModal().setInitialWidth(400);
+						getModal().show(target);
+					}
+
+				}.add(new Image("imageAddLectureUser", new SharedResourceReference(BasePage.class, "../../gfx/add.png"))));
+				
+				
 				item.add(new AjaxLink<Void>("editLecture") {
 
 					private static final long serialVersionUID = 1L;

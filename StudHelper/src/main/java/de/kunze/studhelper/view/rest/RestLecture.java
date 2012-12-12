@@ -61,5 +61,12 @@ public class RestLecture extends RestUtil {
 
 		return is2xx(cr.getStatus());
 	}
+	
+	public boolean addUserToLecture(String lectureId, String userId, Float mark) {
+		ClientResponse cr = this.webResource.path(LECTURE).path(lectureId).path(ADDUSER).path(userId).queryParam("mark", mark.toString()).type(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, null);
+
+		return is2xx(cr.getStatus());
+	}
 
 }

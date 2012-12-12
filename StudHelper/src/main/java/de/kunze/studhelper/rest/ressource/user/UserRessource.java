@@ -34,10 +34,10 @@ public interface UserRessource {
 	public UserTransfer getUser(@PathParam("user_id") Long id);
 
 	@PUT
-	@Path("{university_id}")
+	@Path("{degreecourse_id}")
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-	public Response createUser(@PathParam("university_id") Long id, NewUserTransfer newUser);
+	public Response createUser(@PathParam("degreecourse_id") Long id, NewUserTransfer newUser);
 
 	@POST
 	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

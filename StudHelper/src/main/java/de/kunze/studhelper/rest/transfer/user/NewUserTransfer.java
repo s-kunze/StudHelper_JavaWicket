@@ -13,6 +13,16 @@ public class NewUserTransfer implements Serializable {
 	private String lastname;
 	private String username;
 	private String password;
+	private String password2;
+	
+	public String getPassword2() {
+		return password2;
+	}
+
+	public void setPassword2(String password2) {
+		this.password2 = password2;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	public String getFirstname() {

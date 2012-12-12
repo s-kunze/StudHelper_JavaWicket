@@ -2,45 +2,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
 <wicket:panel>
 
-	<form id="createUserForm">
+	<form wicket:id="createUserForm">
     	<table>
     		<tr> 
     			<td>Universität:</td>
-    			<td><select id="ddCUniversity"></select></td>
+    			<td><select wicket:id="ddCUniversity"></select></td>
     		</tr>
     		<tr> 
     			<td>Fakultät:</td>
-    			<td><select id="ddcDepartment"></select></td>
+    			<td><select wicket:id="ddCDepartment"></select></td>
     		</tr>
     		<tr> 
     			<td>Studiengang:</td>
-    			<td><select id="ddcDegreeCourse"></select></td>
+    			<td><select wicket:id="ddCDegreeCourse"></select></td>
     		</tr>
     		<tr>
     			<td>Vorname:</td>
-    			<td><input id="firstname" type="text" /></td>
+    			<td><input wicket:id="firstname" type="text" /></td>
     		</tr>
     		<tr>
     			<td>Nachname:</td>
-    			<td><input id="lastname" type="text" /></td>
+    			<td><input wicket:id="lastname" type="text" /></td>
     		</tr>
     		<tr>
     			<td>Username:</td>
-    			<td><input id="username" type="text" /></td>
+    			<td><input wicket:id="username" type="text" /></td>
     		</tr>
     		<tr>
     			<td>Passwort:</td>
-    			<td><input id="password" type="text" /></td>
+    			<td><input wicket:id="password" type="password" /></td>
     		</tr>
     		<tr>
     			<td>Passwort bestätigen:</td>
-    			<td><input id="password2" type="text" /></td>
+    			<td><input wicket:id="password2" type="password" /></td>
     		</tr>
     	</table>
-    	<input id="submitUserForm" type="submit" value="Anlegen" />
+    	<input wicket:id="submitUserForm" type="submit" value="Anlegen" />
     </form>
     	
-    <span id="feedback"></span>
+    <span wicket:id="feedback"></span>
 
 </wicket:panel>
 </html>

@@ -85,6 +85,11 @@
 			<artifactId>wicket-extensions</artifactId>
 			<version>1.5.7</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.directory.studio</groupId>
+			<artifactId>org.apache.commons.codec</artifactId>
+			<version>1.6</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>StudHelper</finalName>
