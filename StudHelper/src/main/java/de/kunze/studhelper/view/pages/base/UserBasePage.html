@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de"
+    xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+<wicket:head>
+    <wicket:link>
+        <link href="../../css/Style.css" rel="stylesheet" type="text/css" />
+    </wicket:link>
+</wicket:head>
+</head>
+<body>
+ 
+ 	<!-- Top Row Start -->
+ 	<div id="top">
+ 		<!-- Header Start -->
+	 	<header>
+	 		<h1><span wicket:id="header"></span></h1>
+	 	</header>
+	 	<!-- Header End -->
+ 	</div>
+ 	<!-- Top Row End -->
+ 	
+ 	<div wicket:id="uniModal"></div>
+ 	
+ 	<!-- Middle Row Start -->
+ 	<div id="middle">
+ 		<!-- Menu Start -->
+ 		<aside>
+ 			<table>
+ 				<tr>
+ 					<th>Menü</th>
+ 				</tr>
+ 				<tr>
+ 					<td>
+ 						<span wicket:id="userMenuPanel" />
+ 					</td>
+ 				</tr>
+ 			</table>
+ 		</aside>
+ 		<!-- Menu End -->
+ 		
+ 		<!-- Main Start -->
+	 	<div id="main">
+			<!-- Add the content here -->
+	    	<wicket:child/> 
+	 	</div>
+	 	<!-- Main End -->
+ 	</div>
+ 	<!-- Middle Row End -->
+ 	
+ 
+ 	<!-- Bottom Row Start -->
+ 	<div id="bottom">
+	 	<!-- Footer Start -->
+	 	<footer>
+			<span wicket:id="footer"></span>
+	 	</footer>
+	 	<!-- Footer End -->
+ 	</div>
+ 	<!-- Bottom Row End -->
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package de.kunze.studhelper.view.pages.lecture;
+package de.kunze.studhelper.view.pages.admin.lecture;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -15,17 +17,16 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
-import de.kunze.studhelper.view.pages.modul.Modul;
+import de.kunze.studhelper.view.pages.admin.modul.Modul;
 import de.kunze.studhelper.view.rest.RestDepartment;
 import de.kunze.studhelper.view.rest.RestLecture;
 import de.kunze.studhelper.view.rest.RestModul;
 
+@AuthorizeInstantiation(Roles.ADMIN)
 public class CreateLecture extends Panel {
 	
 	private static final long serialVersionUID = 1L;

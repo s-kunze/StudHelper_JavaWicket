@@ -1,4 +1,4 @@
-package de.kunze.studhelper.view.pages.user;
+package de.kunze.studhelper.view.pages.admin.user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
@@ -31,12 +33,13 @@ import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
 import de.kunze.studhelper.rest.transfer.user.NewUserTransfer;
 import de.kunze.studhelper.rest.transfer.user.UserTransfer;
 import de.kunze.studhelper.util.Util;
-import de.kunze.studhelper.view.pages.base.BasePage;
+import de.kunze.studhelper.view.pages.base.AdminBasePage;
 import de.kunze.studhelper.view.rest.RestDepartment;
 import de.kunze.studhelper.view.rest.RestUniversity;
 import de.kunze.studhelper.view.rest.RestUser;
 
-public class User extends BasePage {
+@AuthorizeInstantiation(Roles.ADMIN)
+public class User extends AdminBasePage {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,7 +88,7 @@ public class User extends BasePage {
 						getModal().show(target);
 					}
 
-				}.add(new Image("imageEditUser", new SharedResourceReference(BasePage.class, "../../gfx/edit.png"))));
+				}.add(new Image("imageEditUser", new SharedResourceReference(AdminBasePage.class, "../../gfx/edit.png"))));
 
 				item.add(new AjaxLink<Void>("deleteUser") {
 
@@ -124,7 +127,7 @@ public class User extends BasePage {
 
 					}
 
-				}.add(new Image("imageDeleteUser", new SharedResourceReference(BasePage.class, "../../gfx/delete.png"))));
+				}.add(new Image("imageDeleteUser", new SharedResourceReference(AdminBasePage.class, "../../gfx/delete.png"))));
 			}
 		};
 

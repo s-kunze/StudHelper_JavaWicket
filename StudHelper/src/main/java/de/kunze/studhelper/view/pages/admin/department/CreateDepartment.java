@@ -1,7 +1,9 @@
-package de.kunze.studhelper.view.pages.department;
+package de.kunze.studhelper.view.pages.admin.department;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -11,9 +13,10 @@ import org.apache.wicket.model.CompoundPropertyModel;
 
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
-import de.kunze.studhelper.view.pages.university.University;
+import de.kunze.studhelper.view.pages.admin.university.University;
 import de.kunze.studhelper.view.rest.RestDepartment;
 
+@AuthorizeInstantiation(Roles.ADMIN)
 public class CreateDepartment extends Panel {
 
 	private static final long serialVersionUID = 1L;

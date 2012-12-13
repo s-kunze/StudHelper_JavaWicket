@@ -1,4 +1,4 @@
-package de.kunze.studhelper.view.pages.department;
+package de.kunze.studhelper.view.pages.admin.department;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,16 +6,14 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
@@ -24,13 +22,13 @@ import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
 import de.kunze.studhelper.rest.transfer.backend.UniversityTransfer;
-import de.kunze.studhelper.view.pages.base.BasePage;
-import de.kunze.studhelper.view.pages.degreecourse.CreateDegreeCourse;
-import de.kunze.studhelper.view.pages.university.University;
+import de.kunze.studhelper.view.pages.admin.degreecourse.CreateDegreeCourse;
+import de.kunze.studhelper.view.pages.base.AdminBasePage;
 import de.kunze.studhelper.view.rest.RestDepartment;
 import de.kunze.studhelper.view.rest.RestUniversity;
 
-public class Department extends BasePage {
+@AuthorizeInstantiation(Roles.ADMIN)
+public class Department extends AdminBasePage {
 
 	private static final long serialVersionUID = 1L;
 
@@ -100,7 +98,7 @@ public class Department extends BasePage {
 						getModal().show(target);
 					}
 
-				}.add(new Image("imageAddDegreeCourse", new SharedResourceReference(BasePage.class, "../../gfx/add.png"))));
+				}.add(new Image("imageAddDegreeCourse", new SharedResourceReference(AdminBasePage.class, "../../gfx/add.png"))));
 				
 				
 				item.add(new AjaxLink<Void>("editDepartment") {
@@ -116,7 +114,7 @@ public class Department extends BasePage {
 						getModal().show(target);
 					}
 
-				}.add(new Image("imageEditDepartment", new SharedResourceReference(BasePage.class, "../../gfx/edit.png"))));
+				}.add(new Image("imageEditDepartment", new SharedResourceReference(AdminBasePage.class, "../../gfx/edit.png"))));
 				
 				item.add(new AjaxLink<Void>("deleteDepartment") {
 
@@ -153,7 +151,7 @@ public class Department extends BasePage {
 						getModal().show(target);
 					}
 
-				}.add(new Image("imageDeleteDepartment", new SharedResourceReference(BasePage.class, "../../gfx/delete.png"))));
+				}.add(new Image("imageDeleteDepartment", new SharedResourceReference(AdminBasePage.class, "../../gfx/delete.png"))));
 			}
 		};
 

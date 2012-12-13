@@ -1,4 +1,4 @@
-package de.kunze.studhelper.view.pages.lecture;
+package de.kunze.studhelper.view.pages.admin.lecture;
 
 import java.io.Serializable;
 
