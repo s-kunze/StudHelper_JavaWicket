@@ -18,6 +18,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
@@ -178,7 +179,7 @@ public class Part extends AdminBasePage {
 
 		List<DegreeCourseTransfer> degreeCourses = restDeg.getDegreeCourses();
 
-		this.ddc = new DropDownChoice<DegreeCourseTransfer>("ddcPart", new CompoundPropertyModel<DegreeCourseTransfer>(dt), degreeCourses,
+		this.ddc = new DropDownChoice<DegreeCourseTransfer>("ddcPart", new PropertyModel(this, "dt"), degreeCourses,
 				new ChoiceRenderer<DegreeCourseTransfer>("name", "id"));
 
 		this.ddc.setModelObject(dt);

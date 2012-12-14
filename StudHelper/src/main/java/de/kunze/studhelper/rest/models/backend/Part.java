@@ -25,13 +25,13 @@ public class Part {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "PART_ID")
+	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "PART_NAME")
+	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "PART_CREDITPOINTS")
+	@Column(name = "CREDITPOINTS")
 	private Integer creditPoints;
 
 	@OneToMany(mappedBy = "part", orphanRemoval = true, cascade = CascadeType.ALL)

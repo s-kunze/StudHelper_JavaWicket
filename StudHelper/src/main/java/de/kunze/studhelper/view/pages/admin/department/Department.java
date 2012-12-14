@@ -18,6 +18,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.DepartmentTransfer;
@@ -179,7 +180,7 @@ public class Department extends AdminBasePage {
 
 		List<UniversityTransfer> universities = restUni.getUniversities();
 
-		this.ddc = new DropDownChoice<UniversityTransfer>("ddCUniversity", new CompoundPropertyModel<UniversityTransfer>(ut), universities,
+		this.ddc = new DropDownChoice<UniversityTransfer>("ddCUniversity", new PropertyModel(this, "ut"), universities,
 				new ChoiceRenderer<UniversityTransfer>("name", "id"));
 
 		this.ddc.setModelObject(ut);

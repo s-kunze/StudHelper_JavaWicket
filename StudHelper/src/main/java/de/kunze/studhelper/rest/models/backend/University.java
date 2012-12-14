@@ -27,10 +27,10 @@ public class University {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "UNIVERSITY_ID")
+	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "UNIVERSITY_NAME")
+	@Column(name = "NAME")
 	private String name;
 	
 	@OneToMany(mappedBy = "university", orphanRemoval = true, cascade = CascadeType.ALL)

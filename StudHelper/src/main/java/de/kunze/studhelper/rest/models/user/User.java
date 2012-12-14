@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.NaturalId;
 
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.LectureUser;
@@ -35,22 +36,23 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "USER_ID")
+	@Column(name = "ID")
 	private long id;
 
-	@Column(name = "USER_FIRSTNAME")
+	@Column(name = "FIRSTNAME")
 	private String firstname;
 
-	@Column(name = "USER_LASTNAME")
+	@Column(name = "LASTNAME")
 	private String lastname;
 
-	@Column(name = "USER_USERNAME")
+	@Column(name = "USERNAME")
+	@NaturalId
 	private String username;
 
-	@Column(name = "USER_PASSWORD")
+	@Column(name = "PASSWORD")
 	private String password;
 
-	@Column(name = "USER_CREDITPOINTS")
+	@Column(name = "CREDITPOINTS")
 	private Integer creditPoints;
 
 	@ManyToOne

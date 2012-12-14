@@ -15,6 +15,9 @@ import org.codehaus.jackson.type.TypeReference;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.core.util.Base64;
 
+import de.kunze.studhelper.rest.exception.NoUserFoundException;
+import de.kunze.studhelper.rest.exception.WrongPasswordException;
+import de.kunze.studhelper.rest.transfer.user.AuthTransfer;
 import de.kunze.studhelper.rest.transfer.user.NewUserTransfer;
 import de.kunze.studhelper.rest.transfer.user.UserTransfer;
 
@@ -26,7 +29,7 @@ public class RestUser extends RestUtil {
 		super();
 	}
 
-	public boolean login(String username, String password) {
+	public AuthTransfer login(String username, String password) throws WrongPasswordException, NoUserFoundException {
 		try {
 			byte[] arr = DigestUtils.md5(password);
 			password = new String(arr, "UTF-8");
@@ -41,28 +44,41 @@ public class RestUser extends RestUtil {
 
 			int status = cr.getStatus();
 
-			/** TODO: make exceptions */
 			if (status == Status.BAD_REQUEST.getStatusCode()) {
-				/** wrong input */
-				return false;
+				throw new IllegalArgumentException();
 			} else if (status == Status.UNAUTHORIZED.getStatusCode()) {
-				/** Wrong Password */
-				return false;
+				throw new WrongPasswordException();
 			} else if (status == Status.NOT_FOUND.getStatusCode()) {
-				/** No username found */
-				return false;
+				logger.info("MAYBE WE HAVE A ADMIN");
+				/** Try again the admin */
+				cr = this.webResource.path(ADMIN).header(HttpHeaders.AUTHORIZATION, auth)
+						.accept(MediaType.APPLICATION_JSON).put(ClientResponse.class, null);
+				
+				status = cr.getStatus();
+				
+				if (status == Status.BAD_REQUEST.getStatusCode()) {
+					throw new IllegalArgumentException();
+				} else if (status == Status.UNAUTHORIZED.getStatusCode()) {
+					throw new WrongPasswordException();
+				} else if (status == Status.NOT_FOUND.getStatusCode()) {
+					throw new NoUserFoundException();
+				} else if (is2xx(status)) {
+					AuthTransfer at = cr.getEntity(AuthTransfer.class);
+					return at;
+				} else {
+					throw new IllegalArgumentException();
+				}
 			} else if (is2xx(status)) {
-				/** auth */
-				return true;
+				AuthTransfer at = cr.getEntity(AuthTransfer.class);
+				return at;
 			} else {
-				/** other failure */
-				return false;
+				throw new IllegalArgumentException();
 			}
 		} catch (UnsupportedEncodingException e) {
 			logger.error("", e);
 		}
-		
-		return false;
+
+		return null;
 	}
 
 	public boolean createUser(NewUserTransfer newUser, String id) {

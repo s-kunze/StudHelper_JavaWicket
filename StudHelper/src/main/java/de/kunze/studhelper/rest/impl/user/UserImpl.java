@@ -25,6 +25,7 @@ import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.models.user.User;
 import de.kunze.studhelper.rest.ressource.user.UserRessource;
+import de.kunze.studhelper.rest.transfer.user.AuthTransfer;
 import de.kunze.studhelper.rest.transfer.user.NewUserTransfer;
 import de.kunze.studhelper.rest.transfer.user.UserTransfer;
 
@@ -136,7 +137,9 @@ public class UserImpl implements UserRessource {
 				logger.info("Trying login of user  {}", username);
 				try {
 					AuthorizationHandler auth = new AuthorizationHandler();
-					auth.auth(username, password);
+					AuthTransfer type = auth.authUser(username, password);
+					
+					return Response.status(Status.OK).entity(type).build();
 				} catch (WrongPasswordException e) {
 					logger.error("", e);
 					return Response.status(Status.UNAUTHORIZED).build();
@@ -148,7 +151,7 @@ public class UserImpl implements UserRessource {
 					return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 				}
 
-				return Response.status(Status.OK).build();
+				
 			}
 		} catch (UnsupportedEncodingException e) {
 			logger.error("", e);

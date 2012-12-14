@@ -14,8 +14,8 @@
 		<property name="hibernate.connection.username">studhelper</property>
 		<property name="hibernate.connection.password">studhelper</property>
 
-<!-- 		<property name="hbm2ddl.auto">update</property> -->
-
+		<property name="hbm2ddl.auto">update</property>
+		
 		<mapping class="de.kunze.studhelper.rest.models.backend.DegreeCourse" />
 		<mapping class="de.kunze.studhelper.rest.models.backend.Department" />
 		<mapping class="de.kunze.studhelper.rest.models.backend.Lecture" />
@@ -25,5 +25,7 @@
 		<mapping class="de.kunze.studhelper.rest.models.backend.University" />
 		<mapping class="de.kunze.studhelper.rest.models.backend.Part" />
 		<mapping class="de.kunze.studhelper.rest.models.user.User" />
+		<mapping class="de.kunze.studhelper.rest.models.user.Admin" />
+		
 	</session-factory>
 </hibernate-configuration>

@@ -18,6 +18,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.ModulTransfer;
@@ -180,7 +181,7 @@ public class Modul extends AdminBasePage {
 
 		List<PartTransfer> parts = restPar.getParts();
 
-		this.ddc = new DropDownChoice<PartTransfer>("ddcModul", new CompoundPropertyModel<PartTransfer>(pt), parts,
+		this.ddc = new DropDownChoice<PartTransfer>("ddcModul", new PropertyModel(this, "pt"), parts,
 				new ChoiceRenderer<PartTransfer>("name", "id"));
 
 		this.ddc.setModelObject(pt);

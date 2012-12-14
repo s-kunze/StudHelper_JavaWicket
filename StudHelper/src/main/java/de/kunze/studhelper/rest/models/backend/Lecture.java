@@ -31,13 +31,13 @@ public class Lecture implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "LECTURE_ID")
+	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "LECTURE_NAME")
+	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "LECTURE_CREDITPOINTS")
+	@Column(name = "CREDITPOINTS")
 	private Integer creditPoints;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "lectures")

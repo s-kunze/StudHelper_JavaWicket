@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 
 import de.kunze.studhelper.view.core.StudhelperWebSession;
+import de.kunze.studhelper.view.pages.admin.index.AdminIndex;
 import de.kunze.studhelper.view.pages.base.UserBasePage;
 import de.kunze.studhelper.view.pages.user.index.Index;
 
@@ -47,13 +48,14 @@ public class Login extends UserBasePage {
 				String username = Login.this.username;
 				String password = Login.this.password;
 				
-				logger.debug("Username: {}", username);
-				logger.debug("Password: {}", password);
 				StudhelperWebSession webSession = (StudhelperWebSession) Session.get();
 				
 				if(webSession.signIn(username, password)) {
-					webSession.setUsername(username);
-					setResponsePage(Index.class);
+					if(webSession.isUser()) {
+						setResponsePage(Index.class);						
+					} else if(webSession.isAdmin()) {
+						setResponsePage(AdminIndex.class);
+					}
 				} else {
 					error("Fehler beim Login");
 				}

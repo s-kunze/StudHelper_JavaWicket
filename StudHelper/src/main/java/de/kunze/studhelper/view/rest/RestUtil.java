@@ -31,6 +31,7 @@ public class RestUtil implements Serializable {
 	protected final static String USER = "user";
 	protected final static String ADDUSER = "adduser";
 	protected final static String AUTH = "auth";
+	protected final static String ADMIN = "admin";
 	
     
     public RestUtil() {

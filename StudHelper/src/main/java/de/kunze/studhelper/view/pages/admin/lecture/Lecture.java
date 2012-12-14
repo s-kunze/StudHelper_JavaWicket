@@ -18,6 +18,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.SharedResourceReference;
 
 import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
@@ -180,7 +181,7 @@ public class Lecture extends AdminBasePage {
 
 		List<ModulTransfer> modules = restMod.getModuls();
 
-		this.ddc = new DropDownChoice<ModulTransfer>("ddcLecture", new CompoundPropertyModel<ModulTransfer>(mt), modules,
+		this.ddc = new DropDownChoice<ModulTransfer>("ddcLecture", new PropertyModel(this, "mt"), modules,
 				new ChoiceRenderer<ModulTransfer>("name", "id"));
 
 		this.ddc.setModelObject(mt);

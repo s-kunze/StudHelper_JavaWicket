@@ -26,13 +26,13 @@ public class DegreeCourse {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "DEGREECOURSE_ID")
+	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "DEGREECOURSE_NAME")
+	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "DEGREECOURSE_CREDITPOINTS")
+	@Column(name = "CREDITPOINTS")
 	private Integer creditPoints;
 
 	@OneToMany(mappedBy = "degreeCourse", orphanRemoval = true, cascade = CascadeType.ALL)

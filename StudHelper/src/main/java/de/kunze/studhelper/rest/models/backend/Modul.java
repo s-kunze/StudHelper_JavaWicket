@@ -28,13 +28,13 @@ public class Modul {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "MODUL_ID")
+	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "MODUL_NAME")
+	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "MODUL_CREDITPOINTS")
+	@Column(name = "CREDITPOINTS")
 	private Integer creditPoints;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
