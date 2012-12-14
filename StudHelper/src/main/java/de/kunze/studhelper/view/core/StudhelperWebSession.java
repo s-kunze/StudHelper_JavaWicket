@@ -4,6 +4,8 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
 
+import de.kunze.studhelper.view.rest.RestUser;
+
 public class StudhelperWebSession extends AuthenticatedWebSession {
 
 	private String username;
@@ -16,7 +18,8 @@ public class StudhelperWebSession extends AuthenticatedWebSession {
 
 	@Override
 	public boolean authenticate(String username, String password) {
-		return ("test".equals(username) && "test".equals(password));
+		RestUser restUser = new RestUser();
+		return restUser.login(username, password);
 	}
 
 	@Override

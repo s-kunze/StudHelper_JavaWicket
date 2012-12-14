@@ -10,6 +10,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -49,4 +51,8 @@ public interface UserRessource {
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response deleteUser(@PathParam("user_id") Long id);
 	
+	@PUT
+	@Path("auth")
+	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public Response authUser(@Context HttpHeaders header);
 }

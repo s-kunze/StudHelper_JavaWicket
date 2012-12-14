@@ -30,6 +30,8 @@ public class RestUtil implements Serializable {
 	protected final static String LECTURE = "lecture";
 	protected final static String USER = "user";
 	protected final static String ADDUSER = "adduser";
+	protected final static String AUTH = "auth";
+	
     
     public RestUtil() {
     	ClientConfig clientConfig = new DefaultClientConfig();

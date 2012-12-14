@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 
 import de.kunze.studhelper.view.core.StudhelperWebSession;
@@ -21,6 +22,11 @@ public class Login extends UserBasePage {
 	private String password;
 
 	public Login() {
+		
+		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+		feedbackPanel.setOutputMarkupId(true);
+
+		add(feedbackPanel);
 		
 		add(new WebMarkupContainer("userMenuPanel"));
 		
@@ -48,16 +54,17 @@ public class Login extends UserBasePage {
 				if(webSession.signIn(username, password)) {
 					webSession.setUsername(username);
 					setResponsePage(Index.class);
+				} else {
+					error("Fehler beim Login");
 				}
 			}
 			
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
 				// TODO Auto-generated method stub
-				
+				target.add(feedbackPanel);
 			}
 		});
-		
 		
 		add(form);
 	}

@@ -10,8 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
 import de.kunze.studhelper.rest.models.backend.LectureUser;
@@ -20,11 +25,12 @@ import de.kunze.studhelper.rest.transfer.user.UserTransfer;
 /**
  * TODO: Maybe we should use a Admin-user. Maybe Permsisions/Roles etc.
  * 
- * @author stefan
- *
+ * @author Stefan Kunze
+ * 
  */
 @Entity
 @Table(name = "USER")
+@NamedQueries({ @NamedQuery(name = "findUserByName", query = "from User u where u.username = :username") })
 public class User {
 
 	@Id
@@ -49,8 +55,9 @@ public class User {
 
 	@ManyToOne
 	private DegreeCourse degreeCourse;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user")
+
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval=true, mappedBy = "pk.user")
+	@Cascade(CascadeType.ALL)
 	private Set<LectureUser> lectureUser = new HashSet<LectureUser>(0);
 
 	public User() {
@@ -111,7 +118,7 @@ public class User {
 	public void setLectureUser(Set<LectureUser> lectureUser) {
 		this.lectureUser = lectureUser;
 	}
-	
+
 	public DegreeCourse getDegreeCourse() {
 		return degreeCourse;
 	}
@@ -125,8 +132,8 @@ public class User {
 		result.setId(this.id);
 		result.setFirstname(this.firstname);
 		result.setLastname(this.lastname);
-		result.setUsername(this.username);		
-		
+		result.setUsername(this.username);
+
 		return result;
 	}
 

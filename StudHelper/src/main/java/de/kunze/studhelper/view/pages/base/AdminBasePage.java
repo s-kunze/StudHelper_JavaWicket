@@ -21,7 +21,6 @@ import de.kunze.studhelper.view.pages.admin.part.Part;
 import de.kunze.studhelper.view.pages.admin.university.University;
 import de.kunze.studhelper.view.pages.admin.user.User;
 
-@AuthorizeInstantiation(Roles.ADMIN)
 public class AdminBasePage extends WebPage {
 
 	private static final long serialVersionUID = 1L;

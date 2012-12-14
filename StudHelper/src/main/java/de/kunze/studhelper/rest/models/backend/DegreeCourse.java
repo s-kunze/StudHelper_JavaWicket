@@ -38,7 +38,7 @@ public class DegreeCourse {
 	@OneToMany(mappedBy = "degreeCourse", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Part> parts;
 
-	@OneToMany(mappedBy = "degreeCourse", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "degreeCourse", cascade = CascadeType.ALL)
 	private List<User> users;
 	
 	@ManyToOne

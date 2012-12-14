@@ -38,7 +38,6 @@ import de.kunze.studhelper.view.rest.RestDepartment;
 import de.kunze.studhelper.view.rest.RestUniversity;
 import de.kunze.studhelper.view.rest.RestUser;
 
-@AuthorizeInstantiation(Roles.ADMIN)
 public class User extends AdminBasePage {
 
 	private static final long serialVersionUID = 1L;
@@ -302,8 +301,8 @@ public class User extends AdminBasePage {
 						error("Sie haben keine gleichen Passwörter eingegeben!");
 					}
 					
-					//MD5
-					newUser.setPassword(DigestUtils.md5Hex(newUser.getPassword()));
+					byte[] arr = DigestUtils.md5(newUser.getPassword());
+					newUser.setPassword(new String(arr));
 					newUser.setPassword2(newUser.getPassword());
 					
 					logger.debug(newUser.getFirstname());

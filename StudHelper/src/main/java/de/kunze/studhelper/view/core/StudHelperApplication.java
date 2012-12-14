@@ -6,6 +6,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebApplication;
 import org.apache.wicket.authroles.authorization.strategies.role.metadata.MetaDataRoleAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
 
+import de.kunze.studhelper.view.pages.admin.user.User;
 import de.kunze.studhelper.view.pages.admin.degreecourse.DegreeCourse;
 import de.kunze.studhelper.view.pages.admin.department.Department;
 import de.kunze.studhelper.view.pages.admin.index.AdminIndex;
@@ -39,6 +40,7 @@ public class StudHelperApplication extends AuthenticatedWebApplication {
 		mountPage("/part", Part.class);
 		mountPage("/modul", Modul.class);
 		mountPage("/lecture", Lecture.class);
+		mountPage("/user", User.class);
 		mountPage("/login", Login.class);
 	
 		MetaDataRoleAuthorizationStrategy.authorize(Index.class, "USER");
