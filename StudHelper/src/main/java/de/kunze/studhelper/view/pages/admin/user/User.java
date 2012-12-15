@@ -38,6 +38,7 @@ import de.kunze.studhelper.view.rest.RestDepartment;
 import de.kunze.studhelper.view.rest.RestUniversity;
 import de.kunze.studhelper.view.rest.RestUser;
 
+@AuthorizeInstantiation("ADMIN")
 public class User extends AdminBasePage {
 
 	private static final long serialVersionUID = 1L;

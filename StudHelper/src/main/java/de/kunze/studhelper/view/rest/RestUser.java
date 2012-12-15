@@ -17,6 +17,8 @@ import com.sun.jersey.core.util.Base64;
 
 import de.kunze.studhelper.rest.exception.NoUserFoundException;
 import de.kunze.studhelper.rest.exception.WrongPasswordException;
+import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
+import de.kunze.studhelper.rest.transfer.backend.LectureMarkTransfer;
 import de.kunze.studhelper.rest.transfer.user.AuthTransfer;
 import de.kunze.studhelper.rest.transfer.user.NewUserTransfer;
 import de.kunze.studhelper.rest.transfer.user.UserTransfer;
@@ -117,6 +119,22 @@ public class RestUser extends RestUtil {
 				.accept(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
 
 		return is2xx(cr.getStatus());
+	}
+	
+	public DegreeCourseTransfer getDegreeCourseFromUser(String id) {
+		return this.webResource.path(USER).path(id).path(DEGREECOURSE).accept(MediaType.APPLICATION_JSON).get(DegreeCourseTransfer.class);
+	}
+	
+	public List<LectureMarkTransfer> getLectureFromUser(String id) {
+		try {
+			String json = this.webResource.path(USER).path(id).path(LECTURE).accept(MediaType.APPLICATION_JSON).get(String.class);
+			return mapper.readValue(json, new TypeReference<List<LectureMarkTransfer>>() {
+			});
+		} catch (IOException e) {
+			logger.error("", e);
+		}
+
+		return new ArrayList<LectureMarkTransfer>();
 	}
 
 }

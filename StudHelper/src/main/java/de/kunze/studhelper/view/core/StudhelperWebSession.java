@@ -44,6 +44,7 @@ public class StudhelperWebSession extends AuthenticatedWebSession {
 			this.type = auth.getType();
 			this.username = auth.getUsername();
 			
+			logger.info("UserID: {}", this.userId);
 			logger.info("LOGIN WITH ROLE {}", this.type);
 			return true;
 		} catch (WrongPasswordException e) {

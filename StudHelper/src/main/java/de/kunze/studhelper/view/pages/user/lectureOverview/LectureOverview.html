@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+	xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<body>
+
+	<!-- Content Start -->
+	<wicket:extend>
+		
+		<div wicket:id="dataviewPanel" id="dataviewDiv">
+			<table cellspacing="0" class="dataview">
+				<thead>
+					<tr>
+						<th>Vorlesung</th>
+						<th>Credit-Points</th>
+						<th>Mark</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr wicket:id="lectureTable">
+						<td><span wicket:id="name">Name Vorlesung</span></td>
+						<td><span wicket:id="cp">CreditPoints Vorlesung</span></td>
+						<td><span wicket:id="mark">2.3</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</wicket:extend>
+
+</body>
+</html>

@@ -16,6 +16,8 @@ import de.kunze.studhelper.view.pages.admin.part.Part;
 import de.kunze.studhelper.view.pages.admin.university.University;
 import de.kunze.studhelper.view.pages.login.Login;
 import de.kunze.studhelper.view.pages.user.index.Index;
+import de.kunze.studhelper.view.pages.user.lecture.UserLecture;
+import de.kunze.studhelper.view.pages.user.lectureOverview.LectureOverview;
 
 public class StudHelperApplication extends AuthenticatedWebApplication {
 
@@ -42,6 +44,8 @@ public class StudHelperApplication extends AuthenticatedWebApplication {
 		mountPage("/lecture", Lecture.class);
 		mountPage("/user", User.class);
 		mountPage("/login", Login.class);
+		mountPage("/userLecture", UserLecture.class);
+		mountPage("/lectureOverview", LectureOverview.class);
 	
 		MetaDataRoleAuthorizationStrategy.authorize(Index.class, "USER");
 	

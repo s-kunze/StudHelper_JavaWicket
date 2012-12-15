@@ -8,7 +8,13 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -22,9 +28,13 @@ import de.kunze.studhelper.rest.auth.AuthorizationHandler;
 import de.kunze.studhelper.rest.exception.NoUserFoundException;
 import de.kunze.studhelper.rest.exception.WrongPasswordException;
 import de.kunze.studhelper.rest.models.backend.DegreeCourse;
+import de.kunze.studhelper.rest.models.backend.LectureUser;
 import de.kunze.studhelper.rest.models.dao.BaseDao;
 import de.kunze.studhelper.rest.models.user.User;
 import de.kunze.studhelper.rest.ressource.user.UserRessource;
+import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
+import de.kunze.studhelper.rest.transfer.backend.LectureMarkTransfer;
+import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 import de.kunze.studhelper.rest.transfer.user.AuthTransfer;
 import de.kunze.studhelper.rest.transfer.user.NewUserTransfer;
 import de.kunze.studhelper.rest.transfer.user.UserTransfer;
@@ -158,6 +168,40 @@ public class UserImpl implements UserRessource {
 		}
 
 		return Response.status(Status.BAD_REQUEST).build();
+	}
+
+	public DegreeCourseTransfer getDegreeCourseFromUser(Long id) {
+		BaseDao<User> dao = new BaseDao<User>(User.class);
+		
+		User user = dao.get(id);
+		if(user != null) {
+			return user.getDegreeCourse().transform();
+		}
+		
+		return null;
+	}
+
+	public List<LectureMarkTransfer> getLecturesFromUser(Long id) {
+		BaseDao<User> dao = new BaseDao<User>(User.class);
+		
+		User user = dao.get(id);
+		if(user != null) {
+			List<LectureMarkTransfer> result = new ArrayList<LectureMarkTransfer>();
+			Set<LectureUser> lectures = user.getLectureUser();
+			
+			for(LectureUser lu : lectures) {
+				LectureMarkTransfer lmt = new LectureMarkTransfer();
+				lmt.setMark(lu.getMark());
+				lmt.setName(lu.getLecture().getName());
+				lmt.setCreditPoints(lu.getLecture().getCreditPoints());
+				
+				result.add(lmt);
+			}
+			 
+			return result;
+		}
+		
+		return new ArrayList<LectureMarkTransfer>();
 	}
 
 }

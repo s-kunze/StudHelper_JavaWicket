@@ -15,6 +15,9 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import de.kunze.studhelper.rest.transfer.backend.DegreeCourseTransfer;
+import de.kunze.studhelper.rest.transfer.backend.LectureMarkTransfer;
+import de.kunze.studhelper.rest.transfer.backend.LectureTransfer;
 import de.kunze.studhelper.rest.transfer.user.NewUserTransfer;
 import de.kunze.studhelper.rest.transfer.user.UserTransfer;
 
@@ -55,4 +58,14 @@ public interface UserRessource {
 	@Path("auth")
 	@Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
 	public Response authUser(@Context HttpHeaders header);
+	
+	@GET
+	@Path("{user_id}/degreecourse")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public DegreeCourseTransfer getDegreeCourseFromUser(@PathParam("user_id") Long id); 
+	
+	@GET
+	@Path("{user_id}/lecture")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	public List<LectureMarkTransfer> getLecturesFromUser(@PathParam("user_id") Long id);
 }
