@@ -302,8 +302,8 @@ public class User extends AdminBasePage {
 						error("Sie haben keine gleichen Passwörter eingegeben!");
 					}
 					
-					byte[] arr = DigestUtils.md5(newUser.getPassword());
-					newUser.setPassword(new String(arr));
+					String str = DigestUtils.md5Hex(newUser.getPassword());
+					newUser.setPassword(str);
 					newUser.setPassword2(newUser.getPassword());
 					
 					logger.debug(newUser.getFirstname());

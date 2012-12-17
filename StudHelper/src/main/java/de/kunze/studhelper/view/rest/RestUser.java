@@ -32,9 +32,8 @@ public class RestUser extends RestUtil {
 	}
 
 	public AuthTransfer login(String username, String password) throws WrongPasswordException, NoUserFoundException {
-		try {
-			byte[] arr = DigestUtils.md5(password);
-			password = new String(arr, "UTF-8");
+			String str = DigestUtils.md5Hex(password);
+			password = str;
 
 			String userPass = username + ":" + password;
 
@@ -76,11 +75,6 @@ public class RestUser extends RestUtil {
 			} else {
 				throw new IllegalArgumentException();
 			}
-		} catch (UnsupportedEncodingException e) {
-			logger.error("", e);
-		}
-
-		return null;
 	}
 
 	public boolean createUser(NewUserTransfer newUser, String id) {

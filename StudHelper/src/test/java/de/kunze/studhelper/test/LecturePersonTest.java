@@ -19,31 +19,31 @@ import de.kunze.studhelper.rest.models.user.User;
  */
 public class LecturePersonTest {
 
-	private SessionFactory sessionFactory;
-	private Session session = null;
-
-	@Before
-	public void init() {
-		try {
-			sessionFactory = HibernateSession.getInstance().getSessionFactory();
-			session = sessionFactory.openSession();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@After
-	public void delete() {
-		try {
-			session.close();
-			sessionFactory.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Test
-	public void testDelete() {
+//	private SessionFactory sessionFactory;
+//	private Session session = null;
+//
+//	@Before
+//	public void init() {
+//		try {
+//			sessionFactory = HibernateSession.getInstance().getSessionFactory();
+//			session = sessionFactory.openSession();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	@After
+//	public void delete() {
+//		try {
+//			session.close();
+//			sessionFactory.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+//
+//	@Test
+//	public void testDelete() {
 //		User person = new User();
 //		person.setName("Test Testi");
 //
@@ -59,10 +59,10 @@ public class LecturePersonTest {
 //
 //			assertTrue(newPerson == null);
 //		}
-	}
-
-	@Test
-	public void testCreate() {
+//	}
+//
+//	@Test
+//	public void testCreate() {
 //
 //		User person = new User();
 //		person.setName("Test Testi");
@@ -84,10 +84,10 @@ public class LecturePersonTest {
 //
 //			dao.delete(person);
 //		}
-	}
-
-	@Test
-	public void testGetAll() {
+//	}
+//
+//	@Test
+//	public void testGetAll() {
 //		User person1 = new User();
 //		person1.setName("Test");
 //
@@ -114,10 +114,10 @@ public class LecturePersonTest {
 //		dao.delete(person1);
 //		dao.delete(person2);
 //		dao.delete(person3);
-	}
-
-	@Test
-	public void testUpdate() {
+//	}
+//
+//	@Test
+//	public void testUpdate() {
 //		User person = new User();
 //		person.setName("Test");
 //
@@ -139,34 +139,34 @@ public class LecturePersonTest {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-	}
-	
-	public static void main(String[] args) {
-		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
-		Session session = sessionFactory.openSession();
-		
-		session.beginTransaction();
-		 
-	    Lecture lecture = new Lecture();
-	    lecture.setName("Mathe 1");
-	    lecture.setCreditPoints(3);
-	 
-	    User user = new User();
-	    user.setFirstname("Stefan");
-	    user.setLastname("Kunze");
-	    
-	    session.save(user);
-	    
-	    LectureUser lectureUser = new LectureUser();
-	    lectureUser.setLecture(lecture);
-	    lectureUser.setUser(user);
-	    lectureUser.setMark(1.7f);
-	    
-	    lecture.getLecturePerson().add(lectureUser);
-	    
-	    session.save(lecture);
-	 
-	    session.getTransaction().commit();
-	}
+//	}
+//	
+//	public static void main(String[] args) {
+//		SessionFactory sessionFactory = HibernateSession.getInstance().getSessionFactory();
+//		Session session = sessionFactory.openSession();
+//		
+//		session.beginTransaction();
+//		 
+//	    Lecture lecture = new Lecture();
+//	    lecture.setName("Mathe 1");
+//	    lecture.setCreditPoints(3);
+//	 
+//	    User user = new User();
+//	    user.setFirstname("Stefan");
+//	    user.setLastname("Kunze");
+//	    
+//	    session.save(user);
+//	    
+//	    LectureUser lectureUser = new LectureUser();
+//	    lectureUser.setLecture(lecture);
+//	    lectureUser.setUser(user);
+//	    lectureUser.setMark(1.7f);
+//	    
+//	    lecture.getLecturePerson().add(lectureUser);
+//	    
+//	    session.save(lecture);
+//	 
+//	    session.getTransaction().commit();
+//	}
 
 }
