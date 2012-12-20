@@ -16,7 +16,8 @@ import de.kunze.studhelper.rest.transfer.backend.PartTransfer;
 /**
  * 
  * @author Stefan Kunze
- *
+ * @version 1.0
+ * @since 1.0
  */
 public class RestDegreeCourse extends RestUtil {
 

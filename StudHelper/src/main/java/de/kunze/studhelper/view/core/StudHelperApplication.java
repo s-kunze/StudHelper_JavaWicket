@@ -18,18 +18,30 @@ import de.kunze.studhelper.view.pages.login.Login;
 import de.kunze.studhelper.view.pages.user.index.Index;
 import de.kunze.studhelper.view.pages.user.lecture.UserLecture;
 import de.kunze.studhelper.view.pages.user.lectureOverview.LectureOverview;
-
+/**
+ * This Class is the main Wicket Application Class.
+ * 
+ * @author Stefan Kunze
+ * @version 1.0
+ * @since 1.0
+ */
 public class StudHelperApplication extends AuthenticatedWebApplication {
 
 	public StudHelperApplication() {
 		super();
 	}
 
+	/**
+	 * This gets the HomePage. For us this is the IndexPage for the normal user.
+	 */
 	@Override
 	public Class<? extends Page> getHomePage() {
 		return Index.class;
 	}
 
+	/**
+	 * This make some init stuff. Also nice links are generated.
+	 */
 	@Override
 	protected void init() {
 		super.init();
@@ -51,11 +63,17 @@ public class StudHelperApplication extends AuthenticatedWebApplication {
 	
 	}
 
+	/**
+	 * Returns the LoginPage
+	 */
 	@Override
 	protected Class<? extends WebPage> getSignInPageClass() {
 		return Login.class;
 	}
 
+	/**
+	 * Returns the WebSessionClass
+	 */
 	@Override
 	protected Class<? extends AbstractAuthenticatedWebSession> getWebSessionClass() {
 		return StudhelperWebSession.class;

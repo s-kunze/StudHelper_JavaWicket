@@ -12,6 +12,13 @@ import de.kunze.studhelper.rest.transfer.user.AuthTransfer;
 import de.kunze.studhelper.rest.transfer.user.UserType;
 import de.kunze.studhelper.view.rest.RestUser;
 
+/**
+ * This class represents a session. It has the userId, the UserType and the username as string
+ * 
+ * @author Stefan Kunze
+ * @version 1.0
+ * @since 1.0
+ */
 public class StudhelperWebSession extends AuthenticatedWebSession {
 
 	private final static Logger logger = LoggerFactory.getLogger(StudhelperWebSession.class);
@@ -26,14 +33,25 @@ public class StudhelperWebSession extends AuthenticatedWebSession {
 
 	private static final long serialVersionUID = 1859498148545214318L;
 
+	/**
+	 * is the User a User ?
+	 * @return
+	 */
 	public boolean isUser() {
 		return UserType.USER.equals(this.type);
 	}
 	
+	/**
+	 * is the logged in User a Admin?
+	 * @return
+	 */
 	public boolean isAdmin() {
 		return UserType.ADMIN.equals(this.type);
 	}
 	
+	/**
+	 * This Method authenticate the User. It sends a request to the server.
+	 */
 	@Override
 	public boolean authenticate(String username, String password) {
 		RestUser restUser = new RestUser();
@@ -57,6 +75,9 @@ public class StudhelperWebSession extends AuthenticatedWebSession {
 		return false;
 	}
 
+	/**
+	 * This Method returns the Roles. If the user is a user, it get the role USER. For admin, ADMIN
+	 */
 	@Override
 	public Roles getRoles() {
 		Roles roles = new Roles();
